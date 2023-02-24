@@ -7,15 +7,17 @@ import java.time.Duration
 import java.util.Date
 
 data class Training (
-    val id: Int,
+    var id: Int,
     var title: String,
     var description: String,
     var place: String,
     var days: ArrayList<Days>,
     var nearestDate: Date,
-    var startedAt: Date,
-    var finishedAt: Date,
+    var startedAt: String,
+    var finishedAt: String,
     var duration: String,
     var level: Level,
-    var type: SportType
+    var type: SportType,
+    var coachId: Int,
+    var coachName: String
     )
