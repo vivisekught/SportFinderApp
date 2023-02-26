@@ -22,102 +22,38 @@ class TrainingRepositoryImpl: TrainingRepository {
                 "1",
                 "qwe",
                 "qwe",
-                arrayListOf(Days.FRIDAY),
-                Date(2505),
-                "1",
+                "13:00",
+                                "13:00",
+                null,
+                null,
+                null,
+                null,
+                null,
                 "2",
-                "3",
                 Level.BEGINNER,
                 SportType.FOOTBALL,
                 15224,
                 "nikita"
             )
         )
-        trainingList.add(
-            Training(
-                2,
-                "2",
-                "qwe",
-                "qwe",
-                arrayListOf(Days.FRIDAY),
-                Date(2505),
-                "1",
-                "2",
-                "3",
-                Level.BEGINNER,
-                SportType.FOOTBALL,
-                15224,
-                "nikita"
-            )
-        )
-        trainingList.add(
-            Training(
-                3,
-                "3",
-                "qwe",
-                "qwe",
-                arrayListOf(Days.FRIDAY),
-                Date(2505),
-                "1",
-                "2",
-                "3",
-                Level.BEGINNER,
-                SportType.FOOTBALL,
-                15224,
-                "nikita"
-            )
-        )
-        trainingList.add(
-            Training(
-                4,
-                "4",
-                "qwe",
-                "qwe",
-                arrayListOf(Days.FRIDAY),
-                Date(2505),
-                "1",
-                "2",
-                "3",
-                Level.BEGINNER,
-                SportType.FOOTBALL,
-                15224,
-                "nikita"
-            )
-        )
-        trainingList.add(
-            Training(
-                5,
-                "5",
-                "qwe",
-                "qwe",
-                arrayListOf(Days.FRIDAY),
-                Date(2505),
-                "1",
-                "2",
-                "3",
-                Level.BEGINNER,
-                SportType.FOOTBALL,
-                15224,
-                "nikita"
-            )
-        )
-        trainingList.add(
-            Training(
-                6,
-                "6",
-                "qwe",
-                "qwe",
-                arrayListOf(Days.FRIDAY),
-                Date(2505),
-                "1",
-                "2",
-                "3",
-                Level.BEGINNER,
-                SportType.FOOTBALL,
-                15224,
-                "nikita"
-            )
-        )
+        trainingList.add(Training(
+            2,
+            "1",
+            "qwe",
+            "qwe",
+            "13:00",
+            "13:00",
+            null,
+            null,
+            null,
+            null,
+            null,
+            "2",
+            Level.BEGINNER,
+            SportType.FOOTBALL,
+            15224,
+            "nikita"
+        ))
         updateList()
     }
 

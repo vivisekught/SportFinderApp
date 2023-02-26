@@ -1,11 +1,14 @@
 package com.example.sportfinderapp.presentation.fragments.home
 
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentHomeBinding
 import com.example.sportfinderapp.presentation.adapters.TrainingAdapter
@@ -49,8 +52,30 @@ class HomeFragment : Fragment() {
             trainingAdapter = TrainingAdapter()
             adapter = trainingAdapter
         }
+        setupOnMoreClickListener()
     }
 
+    private fun setupOnMoreClickListener() {
+        trainingAdapter.setOnMoreClickListener = { view, id ->
+            val popupMenu = PopupMenu(requireContext(),view)
+            popupMenu.menuInflater.inflate(R.menu.training_menu,popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.training_archive ->
+                        Log.d("setupOnMoreClick", "archive $id")
+                    R.id.training_mute ->
+                        Log.d("setupOnMoreClick", "mute $id")
+                    R.id.training_pin ->
+                        Log.d("setupOnMoreClick", "pin $id")
+                }
+                true
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                popupMenu.setForceShowIcon(true)
+            }
+            popupMenu.show()
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

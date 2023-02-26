@@ -4,4 +4,18 @@
     <string name="search_bottom_nav_title">Search</string>
     <string name="chat_bottom_nav_title">Chat</string>
     <string name="add_training">add training</string>
+    <string name="archive">Archive</string>
+    <string name="mute">Mute</string>
+    <string name="pin">Pin</string>
+
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
 </resources>
