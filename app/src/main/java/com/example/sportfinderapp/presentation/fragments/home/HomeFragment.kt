@@ -4,11 +4,11 @@ import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentHomeBinding
 import com.example.sportfinderapp.presentation.adapters.TrainingAdapter
@@ -20,6 +20,7 @@ class HomeFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(this)[HomeViewModel::class.java]
     }
+
 
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
@@ -41,6 +42,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        setupActionBar()
         viewModel.trainingList.observe(viewLifecycleOwner) {
             trainingAdapter.submitList(it)
         }
@@ -68,6 +70,7 @@ class HomeFragment : Fragment() {
                     R.id.training_pin ->
                         Log.d("setupOnMoreClick", "pin $id")
                 }
+
                 true
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -76,6 +79,37 @@ class HomeFragment : Fragment() {
             popupMenu.show()
         }
     }
+
+    private fun setupActionBar(){
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.home_fragment_action_bar, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle the menu selection
+                return when (menuItem.itemId) {
+                    R.id.action_bar_home_archive -> {
+                        Log.d("setupOnMoreClick", "archive")
+                        true
+                    }
+                    R.id.action_bar_home_notification -> {
+                        Log.d("setupOnMoreClick", "notification")
+                        true
+                    }
+                    R.id.action_bar_home_profile -> {
+                        Log.d("setupOnMoreClick", "profile")
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
