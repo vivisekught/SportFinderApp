@@ -25,6 +25,7 @@ class TrainingAdapter : ListAdapter<Training, TrainingAdapter.TrainingViewHolder
     private lateinit var context: Context
 
     var setOnMoreClickListener: ((View, Int) -> Unit)? = null
+    var setOnClickListener: ((Training) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
         context = parent.context
@@ -45,7 +46,7 @@ class TrainingAdapter : ListAdapter<Training, TrainingAdapter.TrainingViewHolder
             trainingCoachNameTv.text = training.coachName
             trainingImg.setImageResource(R.drawable.box)
             trainingCardView.setOnClickListener {
-                Log.d("TrainingAdapter", "full card")
+                setOnClickListener?.invoke(training)
             }
             trainingMenuButton.setOnClickListener {
                 Log.d("TrainingAdapter", "more")

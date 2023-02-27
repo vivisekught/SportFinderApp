@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment
 import android.widget.PopupMenu
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentHomeBinding
+import com.example.sportfinderapp.domain.Training
 import com.example.sportfinderapp.presentation.adapters.TrainingAdapter
 
 class HomeFragment : Fragment() {
@@ -54,8 +57,18 @@ class HomeFragment : Fragment() {
             trainingAdapter = TrainingAdapter()
             adapter = trainingAdapter
         }
+        setupOnClickListener()
         setupOnMoreClickListener()
     }
+
+    private fun setupOnClickListener() {
+        trainingAdapter.setOnClickListener = {
+            findNavController().navigate(
+                HomeFragmentDirections.actionNavigationHomeToTrainingFragment(it)
+            )
+        }
+    }
+
 
     private fun setupOnMoreClickListener() {
         trainingAdapter.setOnMoreClickListener = { view, id ->
@@ -107,7 +120,7 @@ class HomeFragment : Fragment() {
                     else -> false
                 }
             }
-        }, viewLifecycleOwner)
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
 

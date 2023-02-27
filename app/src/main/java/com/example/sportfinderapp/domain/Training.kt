@@ -1,12 +1,11 @@
 package com.example.sportfinderapp.domain
 
-import com.example.sportfinderapp.util.Days
+import android.os.Parcelable
 import com.example.sportfinderapp.util.Level
 import com.example.sportfinderapp.util.SportType
-import java.sql.Time
-import java.time.Duration
-import java.util.Date
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Training (
     var id: Int,
     var title: String,
@@ -24,4 +23,4 @@ data class Training (
     var type: SportType,
     var coachId: Int,
     var coachName: String
-    )
+    ): Parcelable

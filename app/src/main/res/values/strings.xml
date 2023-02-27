@@ -9,6 +9,7 @@
     <string name="pin">Pin</string>
     <string name="notifications">Notifications</string>
     <string name="profile">Profile</string>
+    <string name="list_of_trainings">List of trainings</string>
 
     <string-array name="days">
         <item>Monday</item>
