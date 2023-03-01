@@ -42,16 +42,19 @@
     <fragment
         android:id="@+id/fullscreenTrainingImageFragment"
         android:name="com.example.sportfinderapp.presentation.fragments.FullscreenTrainingImageFragment"
-        android:label="fragment_fullscreen_training_image"
+        android:label=""
         tools:layout="@layout/fragment_fullscreen_training_image" >
         <argument
-            android:name="imageId"
+            android:name="images"
+            app:argType="integer[]" />
+        <argument
+            android:name="currentImagePos"
             app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/trainingAllImagesFragment"
         android:name="com.example.sportfinderapp.presentation.fragments.TrainingAllImagesFragment"
-        android:label="fragment_training_all_images"
+        android:label="@string/all_images"
         tools:layout="@layout/fragment_training_all_images" >
         <action
             android:id="@+id/action_trainingAllImagesFragment_to_fullscreenTrainingImageFragment"

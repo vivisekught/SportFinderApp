@@ -5,11 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportfinderapp.databinding.TrainingImageBinding
 
-class TrainingImageAdapter : RecyclerView.Adapter<TrainingImageAdapter.TrainingImageViewHolder>() {
+class TrainingImageAdapter(private val images: IntArray): RecyclerView.Adapter<TrainingImageAdapter.TrainingImageViewHolder>() {
 
-    var images = listOf<Int>()
-
-    var setOnClickListener: ((Int) -> Unit)? = null
+    var setOnClickListener: ((IntArray, Int) -> Unit)? = null
 
     class TrainingImageViewHolder(val binding: TrainingImageBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -27,7 +25,7 @@ class TrainingImageAdapter : RecyclerView.Adapter<TrainingImageAdapter.TrainingI
         val image = images[position]
         holder.binding.trainingImage.setImageResource(image)
         holder.binding.trainingImage.setOnClickListener {
-            setOnClickListener?.invoke(image)
+            setOnClickListener?.invoke(images, position)
         }
     }
 

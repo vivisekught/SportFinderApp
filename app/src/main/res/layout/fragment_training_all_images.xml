@@ -13,6 +13,6 @@
         android:orientation="vertical"
         app:spanCount="2"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/training_all_image"/>
+        tools:listitem="@layout/training_in_all_image"/>
 
 </FrameLayout>

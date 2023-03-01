@@ -3,20 +3,17 @@ package com.example.sportfinderapp.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportfinderapp.databinding.TrainingAllImageBinding
-import com.example.sportfinderapp.databinding.TrainingImageBinding
+import com.example.sportfinderapp.databinding.TrainingInAllImageBinding
 
-class TrainingAllImageAdapter : RecyclerView.Adapter<TrainingAllImageAdapter.TrainingAllImageViewHolder>() {
+class TrainingAllImageAdapter(private val images: IntArray) : RecyclerView.Adapter<TrainingAllImageAdapter.TrainingAllImageViewHolder>() {
 
-    var images = listOf<Int>()
+    var setOnClickListener: ((IntArray, Int) -> Unit)? = null
 
-    var setOnClickListener: ((Int) -> Unit)? = null
-
-    class TrainingAllImageViewHolder(val binding: TrainingAllImageBinding) :
+    class TrainingAllImageViewHolder(val binding: TrainingInAllImageBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingAllImageViewHolder {
-        val binding = TrainingAllImageBinding.inflate(
+        val binding = TrainingInAllImageBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -26,9 +23,9 @@ class TrainingAllImageAdapter : RecyclerView.Adapter<TrainingAllImageAdapter.Tra
 
     override fun onBindViewHolder(holder: TrainingAllImageViewHolder, position: Int) {
         val image = images[position]
-        holder.binding.trainingAllImage.setImageResource(image)
-        holder.binding.trainingAllImage.setOnClickListener {
-            setOnClickListener?.invoke(image)
+        holder.binding.trainingImageInAll.setImageResource(image)
+        holder.binding.trainingImageInAll.setOnClickListener {
+            setOnClickListener?.invoke(images, position)
         }
     }
 

@@ -65,13 +65,21 @@ class TrainingFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        val training = R.drawable.box
         with(binding.trainingPageImageRw) {
-            trainingImageAdapter = TrainingImageAdapter()
+            trainingImageAdapter = TrainingImageAdapter(
+                intArrayOf(
+                    training,
+                    training,
+                    training,
+                    training,
+                    training,
+                    training
+                )
+            )
             adapter = trainingImageAdapter
         }
-        val training = R.drawable.box
-        trainingImageAdapter.images =
-            listOf(training, training, training, training, training, training)
+
         setupOnClickListener()
     }
 
@@ -81,19 +89,15 @@ class TrainingFragment : Fragment() {
     }
 
     private fun setupOnClickListener() {
-        trainingImageAdapter.setOnClickListener = {
+        trainingImageAdapter.setOnClickListener = { images, position ->
             findNavController().navigate(
                 TrainingFragmentDirections.actionTrainingFragmentToFullscreenTrainingImageFragment(
-                    it
+                    images,
+                    position
                 )
             )
         }
     }
-
-
-//    interface UpdateToolbarTitle {
-//        fun updateToolbarTitle(trainingTitle: String)
-//    }
 
 //    override fun onResume() {
 //        super.onResume()

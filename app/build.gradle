@@ -57,4 +57,7 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.35.1'
     kapt 'com.google.dagger:dagger-compiler:2.35.1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.20"
+
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+
 }

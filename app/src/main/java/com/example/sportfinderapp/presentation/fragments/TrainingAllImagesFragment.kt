@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.presentation.adapters.TrainingAllImageAdapter
-import com.example.sportfinderapp.presentation.adapters.TrainingImageAdapter
 
 
 class TrainingAllImagesFragment : Fragment() {
@@ -25,19 +24,35 @@ class TrainingAllImagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.training_page_all_images_rw)
-        trainingAllImageAdapter = TrainingAllImageAdapter()
-        recyclerView.adapter = trainingAllImageAdapter
-        val training = R.drawable.box
-        trainingAllImageAdapter.images =
-            listOf(training, training, training, training, training, training, training)
+        setupRecyclerView(view)
+    }
 
-        trainingAllImageAdapter.setOnClickListener = {
+    private fun setupRecyclerView(view: View) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.training_page_all_images_rw)
+        val training = R.drawable.box
+        trainingAllImageAdapter = TrainingAllImageAdapter(
+            intArrayOf(
+                training,
+                training,
+                training,
+                training,
+                training,
+                training,
+                training
+            )
+        )
+        recyclerView.adapter = trainingAllImageAdapter
+        setupOnClickListener()
+    }
+
+    private fun setupOnClickListener() {
+        trainingAllImageAdapter.setOnClickListener = { images, position ->
             findNavController().navigate(
                 TrainingAllImagesFragmentDirections
                     .actionTrainingAllImagesFragmentToFullscreenTrainingImageFragment(
-                    it
-                )
+                        images,
+                        position
+                    )
             )
         }
     }
