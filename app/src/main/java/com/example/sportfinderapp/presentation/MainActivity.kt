@@ -2,6 +2,7 @@ package com.example.sportfinderapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,14 +12,16 @@ import com.example.sportfinderapp.databinding.ActivityMainBinding
 import com.example.sportfinderapp.presentation.fragments.training.TrainingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), TrainingFragment.UpdateToolbarTitle{
+class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("TrainingFragment", this.toString())
         binding = ActivityMainBinding.inflate(layoutInflater)
+        Log.d("TrainingFragment", supportActionBar.toString())
         setContentView(binding.root)
         setupBottomNav()
     }
@@ -40,7 +43,9 @@ class MainActivity : AppCompatActivity(), TrainingFragment.UpdateToolbarTitle{
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    override fun updateToolbarTitle(trainingTitle: String) {
-        supportActionBar?.title = trainingTitle
-    }
+//    override fun updateToolbarTitle(trainingTitle: String) {
+//        Log.d("TrainingFragment", supportActionBar.toString())
+//        supportActionBar?.title = trainingTitle
+//        Log.d("TrainingFragment", supportActionBar.toString())
+//    }
 }

@@ -27,10 +27,34 @@
     <fragment
         android:id="@+id/trainingFragment"
         android:name="com.example.sportfinderapp.presentation.fragments.training.TrainingFragment"
-        android:label="fragment_training"
-        tools:layout="@layout/fragment_training" >
+        tools:layout="@layout/fragment_training"
+        android:label="Training">
         <argument
             android:name="Training"
             app:argType="com.example.sportfinderapp.domain.Training" />
+        <action
+            android:id="@+id/action_trainingFragment_to_fullscreenTrainingImageFragment"
+            app:destination="@id/fullscreenTrainingImageFragment" />
+        <action
+            android:id="@+id/action_trainingFragment_to_trainingAllImagesFragment"
+            app:destination="@id/trainingAllImagesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullscreenTrainingImageFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.FullscreenTrainingImageFragment"
+        android:label="fragment_fullscreen_training_image"
+        tools:layout="@layout/fragment_fullscreen_training_image" >
+        <argument
+            android:name="imageId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainingAllImagesFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.TrainingAllImagesFragment"
+        android:label="fragment_training_all_images"
+        tools:layout="@layout/fragment_training_all_images" >
+        <action
+            android:id="@+id/action_trainingAllImagesFragment_to_fullscreenTrainingImageFragment"
+            app:destination="@id/fullscreenTrainingImageFragment" />
     </fragment>
 </navigation>

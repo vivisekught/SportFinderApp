@@ -25,4 +25,8 @@ class ChatFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
 }

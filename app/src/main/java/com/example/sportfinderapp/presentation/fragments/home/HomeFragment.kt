@@ -24,7 +24,6 @@ class HomeFragment : Fragment() {
         ViewModelProvider(this)[HomeViewModel::class.java]
     }
 
-
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = _binding ?: throw RuntimeException("FragmentHomeBinding == null")

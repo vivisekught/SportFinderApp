@@ -1,13 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.training.TrainingFragment">
 
     <TextView
+        android:id="@+id/training_page_title_tv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/app_name"
+        android:textSize="24sp"
 
-</FrameLayout>
+        android:textStyle="bold"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/training_page_coach_iv"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
+        android:src="@drawable/ic_person"
+        app:layout_constraintBottom_toTopOf="@id/training_page_features_sw"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/training_page_title_tv" />
+
+    <TextView
+        android:id="@+id/training_page_coach_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/app_name"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="@id/training_page_coach_iv"
+        app:layout_constraintLeft_toRightOf="@id/training_page_coach_iv"
+        app:layout_constraintBottom_toBottomOf="@id/training_page_coach_iv" />
+
+    <HorizontalScrollView
+        android:id="@+id/training_page_features_sw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/training_page_subscribe"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/training_page_coach_iv">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/training_page_type_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:src="@drawable/ic_pin" />
+
+            <TextView
+                android:id="@+id/training_page_type_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:gravity="start"
+                android:text="4.6" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="?color" />
+
+            <ImageView
+                android:id="@+id/training_page_rating_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:src="@drawable/ic_pin" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="?color" />
+
+            <ImageView
+                android:id="@+id/training_page_level_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:src="@drawable/ic_pin" />
+
+            <TextView
+                android:id="@+id/training_page_level_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Begginer" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="?color"/>
+
+            <ImageView
+                android:id="@+id/training_page_students_count_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pin" />
+
+            <TextView
+                android:id="@+id/training_page_students_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:lines="1"
+                android:text="18556165161616516" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/training_page_subscribe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        app:circularflow_radiusInDP="32"
+        android:text="@string/subscribe"
+        app:layout_constraintTop_toBottomOf="@id/training_page_features_sw"
+        app:layout_constraintBottom_toTopOf="@id/training_page_view_all_tv"/>
+
+    <TextView
+        android:id="@+id/training_page_view_all_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="View all"
+        android:layout_marginTop="8dp"
+        android:textColor="?colorSecondary"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/training_page_subscribe"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/training_page_image_rw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/training_page_view_all_tv"
+        android:orientation="horizontal"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/training_image">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,7 @@ class TrainingRepositoryImpl: TrainingRepository {
         )
         trainingList.add(Training(
             2,
-            "1",
+            "Футбол для юношей шк 202 аыапкуипек",
             "qwe",
             "qwe",
             "13:00",

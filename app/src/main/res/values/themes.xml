@@ -12,6 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="buttonface_archive">@drawable/ic_archive_dark</item>
+        <item name="color">@color/black</item>
     </style>
 </resources>

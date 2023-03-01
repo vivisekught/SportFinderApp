@@ -1,25 +1,30 @@
 package com.example.sportfinderapp.presentation.fragments.training
 
-import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.sportfinderapp.R
+import com.example.sportfinderapp.databinding.FragmentTrainingBinding
 import com.example.sportfinderapp.domain.Training
+import com.example.sportfinderapp.presentation.adapters.TrainingImageAdapter
+
 
 class TrainingFragment : Fragment() {
     private val args by navArgs<TrainingFragmentArgs>()
-    private val training: Training by lazy {
-        args.training
-    }
 
-    private lateinit var updateToolbarTitle: UpdateToolbarTitle
+    private lateinit var trainingImageAdapter: TrainingImageAdapter
+
+
+    private var _binding: FragmentTrainingBinding? = null
+    private val binding: FragmentTrainingBinding
+        get() = _binding ?: throw RuntimeException("FragmentTrainingBinding == null")
+
+    private lateinit var training: Training
 
     companion object {
         fun newInstance() = TrainingFragment()
@@ -29,32 +34,72 @@ class TrainingFragment : Fragment() {
         ViewModelProvider(this)[TrainingViewModel::class.java]
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is UpdateToolbarTitle) {
-            updateToolbarTitle = context
-        } else {
-            throw RuntimeException("Activity must implement UpdateToolbarTitle")
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        training = args.training
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        updateToolbarTitle.updateToolbarTitle(training.title)
-        return inflater.inflate(R.layout.fragment_training, container, false)
+    ): View {
+        _binding = FragmentTrainingBinding.inflate(
+            LayoutInflater.from(inflater.context),
+            container,
+            false
+        )
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val actionBar = requireActivity().actionBar
 
-        Log.d("TrainingFragment", requireActivity().toString())
 
+        setupRecyclerView()
+
+        binding.trainingPageViewAllTv.setOnClickListener {
+            findNavController().navigate(
+                TrainingFragmentDirections.actionTrainingFragmentToTrainingAllImagesFragment()
+            )
+        }
     }
 
-    interface UpdateToolbarTitle {
-        fun updateToolbarTitle(trainingTitle: String)
+    private fun setupRecyclerView() {
+        with(binding.trainingPageImageRw) {
+            trainingImageAdapter = TrainingImageAdapter()
+            adapter = trainingImageAdapter
+        }
+        val training = R.drawable.box
+        trainingImageAdapter.images =
+            listOf(training, training, training, training, training, training)
+        setupOnClickListener()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    private fun setupOnClickListener() {
+        trainingImageAdapter.setOnClickListener = {
+            findNavController().navigate(
+                TrainingFragmentDirections.actionTrainingFragmentToFullscreenTrainingImageFragment(
+                    it
+                )
+            )
+        }
+    }
+
+
+//    interface UpdateToolbarTitle {
+//        fun updateToolbarTitle(trainingTitle: String)
+//    }
+
+//    override fun onResume() {
+//        super.onResume()
+//        val actionBar: ActionBar? = (activity as AppCompatActivity?)?.supportActionBar
+//        if (actionBar != null) {
+//            actionBar.title = training.title
+//        }
+//    }
 }
