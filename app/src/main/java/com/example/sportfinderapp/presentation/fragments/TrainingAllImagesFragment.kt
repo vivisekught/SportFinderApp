@@ -33,12 +33,12 @@ class TrainingAllImagesFragment : Fragment() {
         trainingAllImageAdapter = TrainingAllImageAdapter(
             intArrayOf(
                 training,
+                R.drawable.vertical_test,
                 training,
                 training,
                 training,
                 training,
-                training,
-                training
+                R.drawable.vertical_test
             )
         )
         recyclerView.adapter = trainingAllImageAdapter

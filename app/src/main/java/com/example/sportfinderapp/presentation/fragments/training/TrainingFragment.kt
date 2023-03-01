@@ -71,10 +71,10 @@ class TrainingFragment : Fragment() {
                 intArrayOf(
                     training,
                     training,
+                    R.drawable.vertical_test,
                     training,
                     training,
-                    training,
-                    training
+                    R.drawable.vertical_test
                 )
             )
             adapter = trainingImageAdapter
