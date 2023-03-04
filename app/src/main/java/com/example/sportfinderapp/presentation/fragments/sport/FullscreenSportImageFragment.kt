@@ -1,27 +1,20 @@
-package com.example.sportfinderapp.presentation.fragments
+package com.example.sportfinderapp.presentation.fragments.sport
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.presentation.adapters.ViewPagerImageAdapter
-import kotlin.concurrent.thread
 import kotlin.properties.Delegates
 
-class FullscreenTrainingImageFragment : Fragment() {
+class FullscreenSportImageFragment : Fragment() {
 
-    private val args by navArgs<FullscreenTrainingImageFragmentArgs>()
+    private val args by navArgs<FullscreenSportImageFragmentArgs>()
     private lateinit var viewPager: ViewPager2
 
     private var currentImagePosition by Delegates.notNull<Int>()
@@ -38,7 +31,7 @@ class FullscreenTrainingImageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(
-            R.layout.fragment_fullscreen_training_image,
+            R.layout.fragment_fullscreen_sport_image,
             container,
             false
         )

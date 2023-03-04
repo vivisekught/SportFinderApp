@@ -1,6 +1,5 @@
 package com.example.sportfinderapp.presentation.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,12 @@ class ViewPagerImageAdapter(
     private val images: IntArray
 ): RecyclerView.Adapter<ViewPagerImageAdapter.ViewPagerViewHolder>() {
     inner class ViewPagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val imageView: ImageView = itemView.findViewById(R.id.training_fullscreen_iv)
+        val imageView: ImageView = itemView.findViewById(R.id.layout_sport_fullscreen_iv)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.fullscreen_image,
+            R.layout.layout_sport_fullscreen_image,
             parent,
             false
         )

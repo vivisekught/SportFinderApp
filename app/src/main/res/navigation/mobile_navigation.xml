@@ -16,8 +16,8 @@
         android:label="@string/list_of_trainings"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_trainingFragment"
-            app:destination="@id/trainingFragment" />
+            android:id="@+id/action_navigation_home_to_sportFragment"
+            app:destination="@id/sportFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
@@ -25,25 +25,26 @@
         android:label="Find what you want"
         tools:layout="@layout/fragment_search" />
     <fragment
-        android:id="@+id/trainingFragment"
-        android:name="com.example.sportfinderapp.presentation.fragments.training.TrainingFragment"
-        tools:layout="@layout/fragment_training"
-        android:label="Training">
+        android:id="@+id/sportFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.sport.SportFragment"
+        tools:layout="@layout/fragment_sport"
+        android:label="Sport">
         <argument
-            android:name="Training"
-            app:argType="com.example.sportfinderapp.domain.Training" />
+            android:name="Sport"
+            app:argType="com.example.sportfinderapp.domain.entity.Sport" />
         <action
-            android:id="@+id/action_trainingFragment_to_fullscreenTrainingImageFragment"
-            app:destination="@id/fullscreenTrainingImageFragment" />
+            android:id="@+id/action_sportFragment_to_sportAllImagesFragment"
+            app:destination="@id/sportAllImagesFragment" />
         <action
-            android:id="@+id/action_trainingFragment_to_trainingAllImagesFragment"
-            app:destination="@id/trainingAllImagesFragment" />
+            android:id="@+id/action_sportFragment_to_fullscreenSportImageFragment"
+            app:destination="@id/fullscreenSportImageFragment" />
+
     </fragment>
     <fragment
-        android:id="@+id/fullscreenTrainingImageFragment"
-        android:name="com.example.sportfinderapp.presentation.fragments.FullscreenTrainingImageFragment"
+        android:id="@+id/fullscreenSportImageFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.sport.FullscreenSportImageFragment"
         android:label=""
-        tools:layout="@layout/fragment_fullscreen_training_image" >
+        tools:layout="@layout/fragment_fullscreen_sport_image" >
         <argument
             android:name="images"
             app:argType="integer[]" />
@@ -52,12 +53,15 @@
             app:argType="integer" />
     </fragment>
     <fragment
-        android:id="@+id/trainingAllImagesFragment"
-        android:name="com.example.sportfinderapp.presentation.fragments.TrainingAllImagesFragment"
+        android:id="@+id/sportAllImagesFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.sport.SportAllImagesFragment"
         android:label="@string/all_images"
-        tools:layout="@layout/fragment_training_all_images" >
+        tools:layout="@layout/fragment_sport_all_images" >
+        <argument
+            android:name="images"
+            app:argType="integer[]" />
         <action
-            android:id="@+id/action_trainingAllImagesFragment_to_fullscreenTrainingImageFragment"
-            app:destination="@id/fullscreenTrainingImageFragment" />
+            android:id="@+id/action_sportAllImagesFragment_to_fullscreenSportImageFragment"
+            app:destination="@id/fullscreenSportImageFragment" />
     </fragment>
 </navigation>

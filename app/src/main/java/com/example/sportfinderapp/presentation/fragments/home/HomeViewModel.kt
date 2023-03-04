@@ -1,16 +1,15 @@
 package com.example.sportfinderapp.presentation.fragments.home
 
 import androidx.lifecycle.ViewModel
-import com.example.sportfinderapp.data.TrainingRepositoryImpl
-import com.example.sportfinderapp.domain.GetTrainingListUseCase
-import com.example.sportfinderapp.domain.TrainingRepository
+import com.example.sportfinderapp.data.SportRepositoryImpl
+import com.example.sportfinderapp.domain.usecases.sport.GetSportListUseCase
 
 class HomeViewModel : ViewModel() {
 
-    private val repository = TrainingRepositoryImpl()
+    private val repository = SportRepositoryImpl()
 
-    private val getTrainingListUseCase = GetTrainingListUseCase(repository)
+    private val getSportListUseCase = GetSportListUseCase(repository)
 
-    val trainingList = getTrainingListUseCase()
+    val userSportsList = getSportListUseCase(1)
 
 }

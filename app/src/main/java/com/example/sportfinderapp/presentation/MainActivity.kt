@@ -9,7 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.ActivityMainBinding
-import com.example.sportfinderapp.presentation.fragments.training.TrainingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(){

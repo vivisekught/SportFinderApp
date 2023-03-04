@@ -13,12 +13,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentHomeBinding
-import com.example.sportfinderapp.domain.Training
-import com.example.sportfinderapp.presentation.adapters.TrainingAdapter
+import com.example.sportfinderapp.presentation.adapters.UserSportsAdapter
 
 class HomeFragment : Fragment() {
 
-    private lateinit var trainingAdapter: TrainingAdapter
+    private lateinit var userSportAdapter: UserSportsAdapter
 
     private val viewModel by lazy {
         ViewModelProvider(this)[HomeViewModel::class.java]
@@ -45,41 +44,42 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         setupActionBar()
-        viewModel.trainingList.observe(viewLifecycleOwner) {
-            trainingAdapter.submitList(it)
+        viewModel.userSportsList.observe(viewLifecycleOwner) {
+             userSportAdapter.submitList(it)
         }
+
 
     }
 
     private fun setupRecyclerView() {
         with(binding.trainingRv) {
-            trainingAdapter = TrainingAdapter()
-            adapter = trainingAdapter
+            userSportAdapter = UserSportsAdapter()
+            adapter = userSportAdapter
         }
         setupOnClickListener()
         setupOnMoreClickListener()
     }
 
     private fun setupOnClickListener() {
-        trainingAdapter.setOnClickListener = {
+        userSportAdapter.setOnClickListener = {
             findNavController().navigate(
-                HomeFragmentDirections.actionNavigationHomeToTrainingFragment(it)
+                HomeFragmentDirections.actionNavigationHomeToSportFragment(it)
             )
         }
     }
 
 
     private fun setupOnMoreClickListener() {
-        trainingAdapter.setOnMoreClickListener = { view, id ->
+        userSportAdapter.setOnMoreClickListener = { view, id ->
             val popupMenu = PopupMenu(requireContext(),view)
-            popupMenu.menuInflater.inflate(R.menu.training_menu,popupMenu.menu)
+            popupMenu.menuInflater.inflate(R.menu.sport_menu,popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.training_archive ->
+                    R.id.sport_menu_archive ->
                         Log.d("setupOnMoreClick", "archive $id")
-                    R.id.training_mute ->
+                    R.id.sport_menu_mute ->
                         Log.d("setupOnMoreClick", "mute $id")
-                    R.id.training_pin ->
+                    R.id.sport_menu_pin ->
                         Log.d("setupOnMoreClick", "pin $id")
                 }
 

@@ -5,5 +5,7 @@ enum class Level {
     ADVANCED_BEGINNER,
     INTERMEDIATE,
     ADVANCED,
-    EXPERT
+    EXPERT,
+    FOR_ALL,
+    DIFFERENT
 }

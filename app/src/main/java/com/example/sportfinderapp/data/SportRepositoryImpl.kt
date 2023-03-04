@@ -62,6 +62,6 @@ class SportRepositoryImpl: SportRepository {
     }
 
     override fun getSportList(coachId: Int): LiveData<List<Sport>> {
-        TODO("Not yet implemented")
+        return sportListLD
     }
 }

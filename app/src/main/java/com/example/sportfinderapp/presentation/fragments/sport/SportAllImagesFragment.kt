@@ -1,4 +1,4 @@
-package com.example.sportfinderapp.presentation.fragments
+package com.example.sportfinderapp.presentation.fragments.sport
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,18 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportfinderapp.R
-import com.example.sportfinderapp.presentation.adapters.TrainingAllImageAdapter
+import com.example.sportfinderapp.presentation.adapters.SportAllImageAdapter
 
 
-class TrainingAllImagesFragment : Fragment() {
+class SportAllImagesFragment : Fragment() {
 
-    private lateinit var trainingAllImageAdapter: TrainingAllImageAdapter
+    private lateinit var sportAllImageAdapter: SportAllImageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_training_all_images, container, false)
+        return inflater.inflate(R.layout.fragment_sport_all_images, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,9 +28,9 @@ class TrainingAllImagesFragment : Fragment() {
     }
 
     private fun setupRecyclerView(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.training_page_all_images_rw)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.sport_page_all_images_rw)
         val training = R.drawable.box
-        trainingAllImageAdapter = TrainingAllImageAdapter(
+        sportAllImageAdapter = SportAllImageAdapter(
             intArrayOf(
                 training,
                 R.drawable.vertical_test,
@@ -41,18 +41,17 @@ class TrainingAllImagesFragment : Fragment() {
                 R.drawable.vertical_test
             )
         )
-        recyclerView.adapter = trainingAllImageAdapter
+        recyclerView.adapter = sportAllImageAdapter
         setupOnClickListener()
     }
 
     private fun setupOnClickListener() {
-        trainingAllImageAdapter.setOnClickListener = { images, position ->
+        sportAllImageAdapter.setOnClickListener = { images, position ->
             findNavController().navigate(
-                TrainingAllImagesFragmentDirections
-                    .actionTrainingAllImagesFragmentToFullscreenTrainingImageFragment(
-                        images,
-                        position
-                    )
+                SportAllImagesFragmentDirections.actionSportAllImagesFragmentToFullscreenSportImageFragment(
+                    images,
+                    position
+                )
             )
         }
     }
