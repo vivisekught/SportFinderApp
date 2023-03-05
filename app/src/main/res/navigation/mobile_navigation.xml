@@ -16,8 +16,8 @@
         android:label="@string/list_of_trainings"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_sportFragment"
-            app:destination="@id/sportFragment" />
+            android:id="@+id/action_navigation_home_to_sportPageFragment"
+            app:destination="@id/sportPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
@@ -25,19 +25,22 @@
         android:label="Find what you want"
         tools:layout="@layout/fragment_search" />
     <fragment
-        android:id="@+id/sportFragment"
-        android:name="com.example.sportfinderapp.presentation.fragments.sport.SportFragment"
-        tools:layout="@layout/fragment_sport"
+        android:id="@+id/sportPageFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.sport.SportPageFragment"
+        tools:layout="@layout/fragment_sport_page"
         android:label="Sport">
         <argument
             android:name="Sport"
             app:argType="com.example.sportfinderapp.domain.entity.Sport" />
         <action
-            android:id="@+id/action_sportFragment_to_sportAllImagesFragment"
+            android:id="@+id/action_sportPageFragment_to_sportAllImagesFragment"
             app:destination="@id/sportAllImagesFragment" />
         <action
-            android:id="@+id/action_sportFragment_to_fullscreenSportImageFragment"
+            android:id="@+id/action_sportPageFragment_to_fullscreenSportImageFragment"
             app:destination="@id/fullscreenSportImageFragment" />
+        <action
+            android:id="@+id/action_sportPageFragment_to_trainingPageFragment"
+            app:destination="@id/trainingPageFragment" />
 
     </fragment>
     <fragment
@@ -63,5 +66,14 @@
         <action
             android:id="@+id/action_sportAllImagesFragment_to_fullscreenSportImageFragment"
             app:destination="@id/fullscreenSportImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainingPageFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.training.TrainingPageFragment"
+        android:label="fragment_training_page"
+        tools:layout="@layout/fragment_training_page" >
+        <argument
+            android:name="training"
+            app:argType="com.example.sportfinderapp.domain.entity.Training" />
     </fragment>
 </navigation>

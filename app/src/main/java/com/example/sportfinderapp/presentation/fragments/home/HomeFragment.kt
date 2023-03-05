@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
     private fun setupOnClickListener() {
         userSportAdapter.setOnClickListener = {
             findNavController().navigate(
-                HomeFragmentDirections.actionNavigationHomeToSportFragment(it)
+                HomeFragmentDirections.actionNavigationHomeToSportPageFragment(it)
             )
         }
     }

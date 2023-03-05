@@ -6,9 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Training(
-    var id: String,
+    var id: Int,
     var sportId: Int,
     var date: String,
+    var time: String,
     var level: Level,
     var totalPlaces: Int,
     var availablePlaces: Int,

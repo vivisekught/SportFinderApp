@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".presentation.fragments.sport.SportFragment">
+        tools:context=".presentation.fragments.sport.SportPageFragment">
 
         <TextView
             android:id="@+id/sport_page_title_tv"
@@ -31,7 +31,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
 
             android:src="@drawable/ic_person"
             app:layout_constraintBottom_toTopOf="@id/sport_page_features_sw"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="8dp"
             android:scrollbars="none"
@@ -148,24 +148,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="48dp"
             android:layout_marginBottom="24dp"
             android:text="@string/enroll"
-            app:layout_constraintBottom_toTopOf="@id/sport_page_show_all_images"
+            app:layout_constraintBottom_toTopOf="@id/sport_page_training_dates_rw"
             app:layout_constraintTop_toBottomOf="@id/sport_page_features_sw" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sport_page_training_dates_rw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sport_page_enroll_button"
+            tools:listitem="@layout/layout_training_date"/>
 
         <TextView
             android:id="@+id/sport_page_show_all_images"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:text="@string/view_all"
             android:textColor="?colorSecondary"
 
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sport_page_enroll_button" />
+            app:layout_constraintTop_toBottomOf="@id/sport_page_training_dates_rw" />
 
 
         <androidx.recyclerview.widget.RecyclerView
