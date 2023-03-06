@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.presentation.adapters.SportAllImageAdapter
@@ -13,7 +14,17 @@ import com.example.sportfinderapp.presentation.adapters.SportAllImageAdapter
 
 class SportAllImagesFragment : Fragment() {
 
+    private val args by navArgs<SportAllImagesFragmentArgs>()
+
     private lateinit var sportAllImageAdapter: SportAllImageAdapter
+
+    private lateinit var images: IntArray
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        images = args.images
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -29,17 +40,8 @@ class SportAllImagesFragment : Fragment() {
 
     private fun setupRecyclerView(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.sport_page_all_images_rw)
-        val training = R.drawable.box
         sportAllImageAdapter = SportAllImageAdapter(
-            intArrayOf(
-                training,
-                R.drawable.vertical_test,
-                training,
-                training,
-                training,
-                training,
-                R.drawable.vertical_test
-            )
+            images
         )
         recyclerView.adapter = sportAllImageAdapter
         setupOnClickListener()

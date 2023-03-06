@@ -1,14 +1,15 @@
 package com.example.sportfinderapp.presentation.fragments.home
 
 import androidx.lifecycle.ViewModel
-import com.example.sportfinderapp.data.SportRepositoryImpl
 import com.example.sportfinderapp.domain.usecases.sport.GetSportListUseCase
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
 
-    private val repository = SportRepositoryImpl()
+class HomeViewModel @Inject constructor(
+    getSportListUseCase: GetSportListUseCase
 
-    private val getSportListUseCase = GetSportListUseCase(repository)
+) : ViewModel() {
+
 
     val userSportsList = getSportListUseCase(1)
 
