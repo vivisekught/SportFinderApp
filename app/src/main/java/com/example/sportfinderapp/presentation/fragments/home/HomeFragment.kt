@@ -1,5 +1,6 @@
 package com.example.sportfinderapp.presentation.fragments.home
 
+import android.content.Context
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -26,6 +27,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = _binding ?: throw RuntimeException("FragmentHomeBinding == null")
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

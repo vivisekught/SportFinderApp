@@ -5,7 +5,7 @@ import com.example.sportfinderapp.domain.repository.SportRepository
 import com.example.sportfinderapp.domain.entity.Sport
 import javax.inject.Inject
 
-class GetSportListUseCase(private val repository: SportRepository) {
+class GetSportListUseCase @Inject constructor(private val repository: SportRepository) {
 
     operator fun invoke(coachId: Int): LiveData<List<Sport>>{
         return repository.getSportList(coachId)
