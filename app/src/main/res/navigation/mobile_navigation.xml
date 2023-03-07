@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.example.sportfinderapp.presentation.fragments.chat.ChatFragment"
+        android:label="Chats"
+        tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.sportfinderapp.presentation.fragments.home.HomeFragment"
+        android:label="@string/list_of_trainings"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_sportPageFragment"
+            app:destination="@id/sportPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.example.sportfinderapp.presentation.fragments.search.SearchFragment"
+        android:label="Find what you want"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/sportPageFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.sport.SportPageFragment"
+        tools:layout="@layout/fragment_sport_page"
+        android:label="Sport">
+        <argument
+            android:name="Sport"
+            app:argType="com.example.sportfinderapp.domain.entity.Sport" />
+        <action
+            android:id="@+id/action_sportPageFragment_to_sportAllImagesFragment"
+            app:destination="@id/sportAllImagesFragment" />
+        <action
+            android:id="@+id/action_sportPageFragment_to_fullscreenSportImageFragment"
+            app:destination="@id/fullscreenSportImageFragment" />
+        <action
+            android:id="@+id/action_sportPageFragment_to_trainingPageFragment"
+            app:destination="@id/trainingPageFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fullscreenSportImageFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.sport.FullscreenSportImageFragment"
+        android:label=""
+        tools:layout="@layout/fragment_fullscreen_sport_image" >
+        <argument
+            android:name="images"
+            app:argType="integer[]" />
+        <argument
+            android:name="currentImagePos"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/sportAllImagesFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.sport.SportAllImagesFragment"
+        android:label="@string/all_images"
+        tools:layout="@layout/fragment_sport_all_images" >
+        <argument
+            android:name="images"
+            app:argType="integer[]" />
+        <action
+            android:id="@+id/action_sportAllImagesFragment_to_fullscreenSportImageFragment"
+            app:destination="@id/fullscreenSportImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainingPageFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.training.TrainingPageFragment"
+        android:label="fragment_training_page"
+        tools:layout="@layout/fragment_training_page" >
+        <argument
+            android:name="training"
+            app:argType="com.example.sportfinderapp.domain.entity.Training" />
+    </fragment>
+</navigation>
