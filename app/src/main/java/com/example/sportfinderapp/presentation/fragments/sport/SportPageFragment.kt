@@ -1,6 +1,8 @@
 package com.example.sportfinderapp.presentation.fragments.sport
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +15,12 @@ import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentSportPageBinding
 import com.example.sportfinderapp.domain.entity.Sport
 import com.example.sportfinderapp.domain.entity.Training
+import com.example.sportfinderapp.presentation.SportAppFinderApp
+import com.example.sportfinderapp.presentation.ViewModelFactory
 import com.example.sportfinderapp.presentation.adapters.SportImagesAdapter
-import com.example.sportfinderapp.presentation.adapters.TrainingAdapter
 import com.example.sportfinderapp.presentation.adapters.TrainingDatesAdapter
 import com.example.sportfinderapp.util.Level
+import javax.inject.Inject
 
 
 class SportPageFragment : Fragment() {
@@ -28,6 +32,13 @@ class SportPageFragment : Fragment() {
     private var _binding: FragmentSportPageBinding? = null
     private val binding: FragmentSportPageBinding
         get() = _binding ?: throw RuntimeException("FragmentSportBinding == null")
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as SportAppFinderApp).component
+    }
 
     val sportImage = R.drawable.box
     val sportImages = intArrayOf(
@@ -46,8 +57,11 @@ class SportPageFragment : Fragment() {
         fun newInstance() = SportPageFragment()
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[SportViewModel::class.java]
+    private lateinit var viewModel: SportPageViewModel
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +81,8 @@ class SportPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory)[SportPageViewModel::class.java]
+        Log.d("Nikita", viewModel.toString())
         checkDescriptionEllipsize()
         setupOnClickListeners()
         setupRecyclerViews()
@@ -77,7 +93,9 @@ class SportPageFragment : Fragment() {
 
         binding.sportPageShowAllImages.setOnClickListener {
             findNavController().navigate(
-                SportPageFragmentDirections.actionSportPageFragmentToSportAllImagesFragment(sportImages)
+                SportPageFragmentDirections.actionSportPageFragmentToSportAllImagesFragment(
+                    sportImages
+                )
             )
         }
 
@@ -95,7 +113,7 @@ class SportPageFragment : Fragment() {
         }
     }
 
-    private fun checkDescriptionEllipsize(){
+    private fun checkDescriptionEllipsize() {
 
         with(binding) {
             sportPageDescriptionTv.waitForLayout {
@@ -112,7 +130,7 @@ class SportPageFragment : Fragment() {
     }
 
     private fun setupTrainingDatesRecyclerView() {
-        with(binding.sportPageTrainingDatesRw){
+        with(binding.sportPageTrainingDatesRw) {
             trainingDatesAdapter = TrainingDatesAdapter(
                 getTrainings()
             )
@@ -127,32 +145,32 @@ class SportPageFragment : Fragment() {
         }
     }
 
-    private fun getTrainings(): List<List<Training> >{
+    private fun getTrainings(): List<List<Training>> {
         return arrayListOf(
             arrayListOf(
-                Training(1,1, "28.01", "12:20", Level.BEGINNER, 40, 25, 15),
-                Training(2,1, "28.01", "14:20", Level.EXPERT, 40, 15, 15),
-                Training(3,1, "28.01", "16:20", Level.INTERMEDIATE, 40, 35, 15),
-                Training(4,1, "28.01", "18:20", Level.FOR_ALL, 40, 12, 15),
-                Training(5,1, "28.01", "19:20", Level.DIFFERENT, 40, 10, 15),
+                Training(1, 1, "28.01", "12:20", Level.BEGINNER, 40, 25, 15),
+                Training(2, 1, "28.01", "14:20", Level.EXPERT, 40, 15, 15),
+                Training(3, 1, "28.01", "16:20", Level.INTERMEDIATE, 40, 35, 15),
+                Training(4, 1, "28.01", "18:20", Level.FOR_ALL, 40, 12, 15),
+                Training(5, 1, "28.01", "19:20", Level.DIFFERENT, 40, 10, 15),
             ),
             arrayListOf(
-                Training(1,1, "29.01", "12:20", Level.BEGINNER, 40, 25, 15),
-                Training(2,1, "29.01", "14:20", Level.EXPERT, 40, 15, 15),
+                Training(1, 1, "29.01", "12:20", Level.BEGINNER, 40, 25, 15),
+                Training(2, 1, "29.01", "14:20", Level.EXPERT, 40, 15, 15),
             ),
             arrayListOf(
-                Training(1,1, "30.01", "12:20", Level.BEGINNER, 40, 25, 15),
-                Training(2,1, "30.01", "14:20", Level.EXPERT, 40, 15, 15),
-                Training(3,1, "30.01", "16:20", Level.INTERMEDIATE, 40, 35, 15),
-                Training(4,1, "30.01", "18:20", Level.FOR_ALL, 40, 12, 15),
-                Training(5,1, "30.01", "19:20", Level.DIFFERENT, 40, 10, 15),
-                Training(5,1, "30.01", "19:20", Level.DIFFERENT, 40, 10, 15),
-                Training(5,1, "30.01", "19:20", Level.DIFFERENT, 40, 10, 15),
+                Training(1, 1, "30.01", "12:20", Level.BEGINNER, 40, 25, 15),
+                Training(2, 1, "30.01", "14:20", Level.EXPERT, 40, 15, 15),
+                Training(3, 1, "30.01", "16:20", Level.INTERMEDIATE, 40, 35, 15),
+                Training(4, 1, "30.01", "18:20", Level.FOR_ALL, 40, 12, 15),
+                Training(5, 1, "30.01", "19:20", Level.DIFFERENT, 40, 10, 15),
+                Training(5, 1, "30.01", "19:20", Level.DIFFERENT, 40, 10, 15),
+                Training(5, 1, "30.01", "19:20", Level.DIFFERENT, 40, 10, 15),
             ),
         )
     }
 
-    private fun setupSportImagesRecyclerView(){
+    private fun setupSportImagesRecyclerView() {
         with(binding.sportPageImageRw) {
             sportImageAdapter = SportImagesAdapter(
                 sportImages
@@ -161,7 +179,6 @@ class SportPageFragment : Fragment() {
         }
         setupOnImageClickListener()
     }
-
 
 
     private fun setupOnImageClickListener() {

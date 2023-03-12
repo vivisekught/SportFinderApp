@@ -1,31 +1,46 @@
 package com.example.sportfinderapp.presentation.fragments.home
 
+import android.content.Context
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.PopupMenu
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentHomeBinding
+import com.example.sportfinderapp.presentation.SportAppFinderApp
+import com.example.sportfinderapp.presentation.ViewModelFactory
 import com.example.sportfinderapp.presentation.adapters.UserSportsAdapter
+import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
     private lateinit var userSportAdapter: UserSportsAdapter
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[HomeViewModel::class.java]
-    }
+    private lateinit var viewModel: HomeViewModel
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = _binding ?: throw RuntimeException("FragmentHomeBinding == null")
+
+    private val component by lazy {
+        (requireActivity().application as SportAppFinderApp).component
+    }
+
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,10 +57,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
         setupRecyclerView()
         setupActionBar()
         viewModel.userSportsList.observe(viewLifecycleOwner) {
-             userSportAdapter.submitList(it)
+            userSportAdapter.submitList(it)
         }
 
 
@@ -71,8 +87,8 @@ class HomeFragment : Fragment() {
 
     private fun setupOnMoreClickListener() {
         userSportAdapter.setOnMoreClickListener = { view, id ->
-            val popupMenu = PopupMenu(requireContext(),view)
-            popupMenu.menuInflater.inflate(R.menu.sport_menu,popupMenu.menu)
+            val popupMenu = PopupMenu(requireContext(), view)
+            popupMenu.menuInflater.inflate(R.menu.sport_menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.sport_menu_archive ->
@@ -92,7 +108,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupActionBar(){
+    private fun setupActionBar() {
         val menuHost: MenuHost = requireActivity()
 
         menuHost.addMenuProvider(object : MenuProvider {

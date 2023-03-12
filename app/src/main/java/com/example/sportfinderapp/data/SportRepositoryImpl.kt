@@ -6,9 +6,10 @@ import com.example.sportfinderapp.domain.entity.Sport
 import com.example.sportfinderapp.domain.repository.SportRepository
 import com.example.sportfinderapp.util.Level
 import com.example.sportfinderapp.util.SportType
+import javax.inject.Inject
 
 
-class SportRepositoryImpl: SportRepository {
+class SportRepositoryImpl @Inject constructor(): SportRepository {
 
     private val sportListLD = MutableLiveData<List<Sport>>()
     private val sportList = sortedSetOf<Sport>({ o1, o2 -> o1.id.compareTo(o2.id) })
