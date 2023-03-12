@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/registrationFragment">
 
     <fragment
         android:id="@+id/navigation_chat"
@@ -75,5 +75,14 @@
         <argument
             android:name="training"
             app:argType="com.example.sportfinderapp.domain.entity.Training" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.registration.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 </navigation>

@@ -3,6 +3,7 @@ package com.example.sportfinderapp.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,9 +19,7 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("TrainingFragment", this.toString())
         binding = ActivityMainBinding.inflate(layoutInflater)
-        Log.d("TrainingFragment", supportActionBar.toString())
         setContentView(binding.root)
         setupBottomNav()
     }
@@ -28,6 +27,8 @@ class MainActivity : AppCompatActivity(){
     private fun setupBottomNav(){
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_chat
@@ -35,6 +36,16 @@ class MainActivity : AppCompatActivity(){
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.registrationFragment) {
+                navView.visibility = View.GONE
+                supportActionBar?.hide()
+            } else {
+                navView.visibility = View.VISIBLE
+                supportActionBar?.show()
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
