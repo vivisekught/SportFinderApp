@@ -30,5 +30,14 @@
     <string name="more">more</string>
     <string name="apply">apply</string>
     <string name="available_places">Available_places places: %s</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="login">Login</string>
+    <string name="full_name">Full name</string>
+    <string name="password_requirements">Between 8 and 72 characters</string>
+    <string name="join">Join</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="log_in">Log in</string>
 
 </resources>

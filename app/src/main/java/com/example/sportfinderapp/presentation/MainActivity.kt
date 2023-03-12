@@ -1,9 +1,8 @@
 package com.example.sportfinderapp.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -12,7 +11,7 @@ import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity(){
         setupBottomNav()
     }
 
-    private fun setupBottomNav(){
+    private fun setupBottomNav() {
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity(){
         navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.registrationFragment) {
+            if (destination.id == R.id.registrationFragment || destination.id == R.id.loginFragment) {
                 navView.visibility = View.GONE
                 supportActionBar?.hide()
             } else {

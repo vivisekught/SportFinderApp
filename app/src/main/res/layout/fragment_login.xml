@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.registration.RegistrationFragment">
+    tools:context=".presentation.fragments.login.LoginFragment">
 
     <TextView
-        android:id="@+id/registration_app_title_tv"
+        android:id="@+id/login_app_title_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -15,43 +15,22 @@
         android:textSize="22sp"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/registration_full_name_til"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@id/registration_email_til"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_app_title_tv"
-        app:layout_constraintVertical_chainStyle="packed">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/registration_full_name_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/full_name" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/registration_email_til"
+        android:id="@+id/login_email_til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@id/registration_password_ll"
+        app:layout_constraintBottom_toTopOf="@id/login_password_ll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_full_name_til">
+        app:layout_constraintTop_toBottomOf="@id/login_app_title_tv"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/registration_email_et"
+            android:id="@+id/login_email_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email" />
@@ -59,7 +38,7 @@
 
 
     <LinearLayout
-        android:id="@+id/registration_password_ll"
+        android:id="@+id/login_password_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -68,47 +47,48 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/registration_join_button"
+        app:layout_constraintBottom_toTopOf="@+id/login_join_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_email_til">
+        app:layout_constraintTop_toBottomOf="@+id/login_email_til">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/registration_password_til"
+            android:id="@+id/login_password_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/registration_password_et"
+                android:id="@+id/login_password_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/registration_password_require"
+            android:id="@+id/login_password_require"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
             android:padding="4dp"
-            android:text="@string/password_requirements"
-            android:textSize="12sp"
-            android:textStyle="italic" />
+            android:text="@string/forget_password"
+            android:textColor="@color/teal_200" />
 
     </LinearLayout>
 
 
     <Button
-        android:id="@+id/registration_join_button"
+        android:id="@+id/login_join_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/join"
+        android:text="@string/login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_password_ll" />
+        app:layout_constraintTop_toBottomOf="@id/login_password_ll" />
 
 
     <LinearLayout
@@ -117,20 +97,20 @@
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registration_join_button">
+        app:layout_constraintTop_toBottomOf="@id/login_join_button">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/already_have_account" />
+            android:text="New to SportFinder?" />
 
         <TextView
-            android:id="@+id/registration_already_have_acc_button"
+            android:id="@+id/login_go_to_registration_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/log_in"
+            android:text="Sing up"
             android:textColor="@color/teal_200" />
 
 

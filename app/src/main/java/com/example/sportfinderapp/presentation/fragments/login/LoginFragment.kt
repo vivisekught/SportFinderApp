@@ -1,4 +1,4 @@
-package com.example.sportfinderapp.presentation.fragments.registration
+package com.example.sportfinderapp.presentation.fragments.login
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,16 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.sportfinderapp.R
 
-class RegistrationFragment : Fragment() {
+class LoginFragment : Fragment() {
 
     companion object {
-        fun newInstance() = RegistrationFragment()
+        fun newInstance() = LoginFragment()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_registration, container, false)
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 }
