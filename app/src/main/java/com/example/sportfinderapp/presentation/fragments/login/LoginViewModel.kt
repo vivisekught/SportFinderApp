@@ -1,5 +1,6 @@
 package com.example.sportfinderapp.presentation.fragments.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,9 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     val state: LiveData<LoginState>
         get() = _state
 
-    fun loginCheck(email: String?, password: String?){
+    fun loginCheck(inputEmail: String?, inputPassword: String?){
+        val email = inputEmail?.trim()
+        val password = inputPassword?.trim()
         if(email.isNullOrBlank() && password.isNullOrBlank()){
             _state.value = EmptyEmailAndPassword
             return
@@ -41,7 +44,6 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     private fun getUserByEmail(email: String): User {
         return User(1, "email", "1234", "Nikita", 14, "Man")
-
     }
 
     private fun checkEmail(email: String): Boolean{

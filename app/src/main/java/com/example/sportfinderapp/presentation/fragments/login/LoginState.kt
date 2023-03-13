@@ -9,5 +9,5 @@ object EmptyPassword: LoginState()
 object EmptyEmailAndPassword: LoginState()
 object EmailNotFound: LoginState()
 object IncorrectPassword: LoginState()
-class CorrectLoginData(val user: User): LoginState()
+data class CorrectLoginData(val user: User): LoginState()
 

@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
             goToRegistrationButton.setOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
             }
-            joinButton.setOnClickListener {
+            loginButton.setOnClickListener {
                 viewModel.loginCheck(
                     binding.emailEt.text.toString(),
                     binding.passwordEt.text.toString()
@@ -103,7 +103,7 @@ class LoginFragment : Fragment() {
                 }
                 is CorrectLoginData -> {
                     findNavController().navigate(
-                        LoginFragmentDirections.actionLoginFragmentToNavigationHome()
+                        LoginFragmentDirections.actionLoginFragmentToNavigationHome(it.user)
                     )
                 }
             }
