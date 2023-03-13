@@ -2,6 +2,7 @@ package com.example.sportfinderapp.di
 
 import androidx.lifecycle.ViewModel
 import com.example.sportfinderapp.presentation.fragments.home.HomeViewModel
+import com.example.sportfinderapp.presentation.fragments.login.LoginViewModel
 import com.example.sportfinderapp.presentation.fragments.sport.SportPageViewModel
 import com.example.sportfinderapp.presentation.fragments.training.TrainingPageViewModel
 import dagger.Binds
@@ -26,8 +27,9 @@ interface ViewModelModule {
     @ViewModelKey(TrainingPageViewModel::class)
     fun bindTrainingPageViewModel(viewModel: TrainingPageViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(ChatViewModel::class)
-//    fun bindShopItemViewModel(viewModel: ShopItemViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
+
 }
