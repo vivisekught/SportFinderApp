@@ -4,8 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +44,7 @@ class RegistrationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRegistrationBinding.inflate(
             LayoutInflater.from(inflater.context), container, false
         )
@@ -125,9 +124,10 @@ class RegistrationFragment : Fragment() {
                 binding.passwordTil.error = message
             }
             finishRegistration.observe(viewLifecycleOwner) {
+                Log.d("Nikita", userUID.value.toString())
                 findNavController().navigate(
                     RegistrationFragmentDirections.actionRegistrationFragmentToNavigationHome(
-                        viewModel.user?.value ?: throw RuntimeException("User doesnt create")
+                        viewModel.user.value ?: throw RuntimeException("User doesnt create")
                     )
                 )
             }
@@ -142,13 +142,6 @@ class RegistrationFragment : Fragment() {
                     binding.emailEt.text.toString(),
                     binding.passwordEt.text.toString()
                 )
-            }
-            showPasswordCb.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    passwordEt.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                } else {
-                    passwordEt.transformationMethod = PasswordTransformationMethod.getInstance()
-                }
             }
 
             alreadyHaveAccButton.setOnClickListener {

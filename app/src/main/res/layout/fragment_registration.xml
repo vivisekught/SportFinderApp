@@ -79,7 +79,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_til"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_et"
@@ -89,12 +90,6 @@
                 android:ellipsize="start"
                 android:hint="@string/password" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <CheckBox
-            android:id="@+id/show_password_cb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/show_password" />
 
         <TextView
             android:id="@+id/password_require"
