@@ -69,13 +69,6 @@ class LoginFragment : Fragment() {
                     binding.passwordEt.text.toString()
                 )
             }
-            showPasswordCb.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    passwordEt.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                } else {
-                    passwordEt.transformationMethod = PasswordTransformationMethod.getInstance()
-                }
-            }
         }
     }
 
