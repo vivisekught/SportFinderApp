@@ -1,12 +1,15 @@
 package com.example.sportfinderapp.data
 
-import com.example.sportfinderapp.domain.entity.Response
 import com.example.sportfinderapp.domain.entity.User
+import com.example.sportfinderapp.domain.entity.responses.SignInResponse
+import com.example.sportfinderapp.domain.entity.responses.SignUpResponse
 import com.example.sportfinderapp.domain.repository.UserRepository
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,14 +25,14 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         password: String,
         fullName: String
-    ): Flow<Response> = flow {
+    ): Flow<SignUpResponse> = flow {
         var singUpSuccessfully = false
-        emit(Response.Loading)
+        emit(SignUpResponse.Loading)
 
         try {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    singUpSuccessfully = true
+                .addOnCompleteListener {
+                    singUpSuccessfully = it.isSuccessful
                 }.await()
 
             if (singUpSuccessfully) {
@@ -41,20 +44,24 @@ class UserRepositoryImpl @Inject constructor(
 
                     }.await()
 
-                emit(Response.Success)
+                emit(SignUpResponse.Success)
 
             } else {
-                emit(Response.Error("Failed to Sing Up"))
+                emit(SignUpResponse.UnexpectedError("Failed to Sign Up"))
             }
 
+        } catch (e: FirebaseNetworkException) {
+            emit(SignUpResponse.NetworkError)
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            emit(SignUpResponse.WeakPasswordError(e.reason.toString()))
         } catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An Unexpected error"))
+            emit(SignUpResponse.UnexpectedError(e.localizedMessage ?: "An Unexpected error"))
         }
     }
 
-    override suspend fun singInUser(email: String, password: String): Flow<Response> = flow {
+    override suspend fun singInUser(email: String, password: String): Flow<SignInResponse> = flow {
         var singInSuccessfully = false
-        emit(Response.Loading)
+        emit(SignInResponse.Loading)
         try {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
@@ -62,18 +69,21 @@ class UserRepositoryImpl @Inject constructor(
                 }.await()
 
             if (singInSuccessfully) {
-                emit(Response.Success)
+                emit(SignInResponse.Success)
             } else {
-                emit(Response.Error("Failed to Sing Up"))
+                emit(SignInResponse.UnexpectedError("Failed to Sign Up"))
             }
         } catch (e: FirebaseAuthInvalidUserException) {
-            emit(Response.Error("Email does not exist"))
+            emit(SignInResponse.InvalidUserError)
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            emit(Response.Error("IncorrectPassword"))
+            emit(SignInResponse.InvalidCredentialError)
         } catch (e: FirebaseNetworkException) {
-            emit(Response.Error("Network"))
-        } catch (e: Exception){
-            emit(Response.Error("An Unexpected error"))
+            emit(SignInResponse.NetworkError)
+        }
+        catch (e: FirebaseTooManyRequestsException){
+            emit(SignInResponse.UnexpectedError("Too many requests, please reset password or try later!"))
+        }catch (e: Exception) {
+            emit(SignInResponse.UnexpectedError(e.localizedMessage?.toString() ?: "Unexpected error"))
         }
 
 

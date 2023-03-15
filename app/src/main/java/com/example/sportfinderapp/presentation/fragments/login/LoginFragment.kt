@@ -75,28 +75,37 @@ class LoginFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
-                is SingInState.EmptyEmail -> {
+                is SignInState.EmptyEmail -> {
                     Log.d("Nikita", "EmptyEmail")
                     binding.emailTil.error = "empty email"
                 }
-                is SingInState.EmptyPassword -> {
+                is SignInState.EmptyPassword -> {
                     binding.passwordTil.error = "empty password"
                 }
-//                is EmailNotFound -> {
-//                    binding.emailTil.error = "email not found"
-//                }
-//                is IncorrectPassword -> {
-//                    Log.d("Nikita", "IncorrectPassword")
-//                    binding.passwordTil.error = "incorrect password"
-//                }
-                is SingInState.Loading -> {
+                is SignInState.Loading -> {
                     binding.progressBarLoading.isVisible = true
                 }
-                is SingInState.Error -> {
+
+                is SignInState.IncorrectPassword -> {
+                    binding.progressBarLoading.isVisible = false
+                    binding.passwordTil.error = "Incorrect password!"
+                }
+
+                is SignInState.InvalidUserError -> {
+                    binding.progressBarLoading.isVisible = false
+                    binding.emailTil.error = "Email not found!"
+                }
+                is SignInState.NetworkError -> {
+                    binding.progressBarLoading.isVisible = false
+                    Toast.makeText(requireContext(), "Check Internet connection", Toast.LENGTH_LONG)
+                        .show()
+                }
+
+                is SignInState.UnexpectedError -> {
                     binding.progressBarLoading.isVisible = false
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                 }
-                is SingInState.Success -> {
+                is SignInState.Success -> {
                     binding.progressBarLoading.isVisible = false
                     findNavController().navigate(
                         LoginFragmentDirections.actionLoginFragmentToNavigationHome()

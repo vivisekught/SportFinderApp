@@ -1,30 +1,31 @@
 package com.example.sportfinderapp.presentation.fragments.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sportfinderapp.domain.entity.Response
-import com.example.sportfinderapp.domain.usecases.user.SingInUserUseCase
+import com.example.sportfinderapp.domain.entity.responses.SignInResponse
+import com.example.sportfinderapp.domain.usecases.user.SignInUserUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val singInUserUse: SingInUserUseCase
+    private val singInUserUse: SignInUserUseCase
 ) : ViewModel() {
-    private val _state = MutableLiveData<SingInState>()
-    val state: LiveData<SingInState>
+    private val _state = MutableLiveData<SignInState>()
+    val state: LiveData<SignInState>
         get() = _state
 
     fun loginCheck(inputEmail: String?, inputPassword: String?){
         val email = inputEmail?.trim()
         val password = inputPassword?.trim()
         if(email.isNullOrBlank()){
-            _state.value = SingInState.EmptyEmail
+            _state.value = SignInState.EmptyEmail
             return
         }
         if(password.isNullOrBlank()){
-            _state.value = SingInState.EmptyPassword
+            _state.value = SignInState.EmptyPassword
             return
         }
         else {
@@ -35,15 +36,25 @@ class LoginViewModel @Inject constructor(
     private fun singIn(email: String, password: String) {
         viewModelScope.launch {
             singInUserUse(email = email, password = password).collect{
+                Log.d("Nikita", it.toString())
                 when(it) {
-                    is Response.Loading -> {
-                        _state.value = SingInState.Loading
+                    is SignInResponse.Loading -> {
+                        _state.value = SignInState.Loading
                     }
-                    is Response.Error -> {
-                        _state.value = SingInState.Error(it.message)
+                    is SignInResponse.Success -> {
+                        _state.value = SignInState.Success
                     }
-                    is Response.Success -> {
-                        _state.value = SingInState.Success
+                    is SignInResponse.InvalidUserError -> {
+                        _state.value = SignInState.InvalidUserError
+                    }
+                    is SignInResponse.InvalidCredentialError -> {
+                        _state.value = SignInState.IncorrectPassword
+                    }
+                    SignInResponse.NetworkError -> {
+                        _state.value = SignInState.NetworkError
+                    }
+                    is SignInResponse.UnexpectedError -> {
+                        _state.value = SignInState.UnexpectedError(it.message)
                     }
                 }
             }
