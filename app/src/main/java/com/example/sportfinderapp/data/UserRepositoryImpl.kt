@@ -21,7 +21,7 @@ class UserRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore
 ) : UserRepository {
 
-    override suspend fun singUpUser(
+    override suspend fun signUpUser(
         email: String,
         password: String,
         fullName: String
@@ -59,7 +59,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun singInUser(email: String, password: String): Flow<SignInResponse> = flow {
+    override suspend fun signInUser(email: String, password: String): Flow<SignInResponse> = flow {
         var singInSuccessfully = false
         emit(SignInResponse.Loading)
         try {
@@ -85,7 +85,5 @@ class UserRepositoryImpl @Inject constructor(
         }catch (e: Exception) {
             emit(SignInResponse.UnexpectedError(e.localizedMessage?.toString() ?: "Unexpected error"))
         }
-
-
     }
 }

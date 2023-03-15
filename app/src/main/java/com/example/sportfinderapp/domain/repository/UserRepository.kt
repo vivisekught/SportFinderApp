@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    suspend fun singUpUser(email: String, password: String, fullName: String): Flow<SignUpResponse>
+    suspend fun signUpUser(email: String, password: String, fullName: String): Flow<SignUpResponse>
 
-    suspend fun singInUser(email: String, password: String): Flow<SignInResponse>
+    suspend fun signInUser(email: String, password: String): Flow<SignInResponse>
 }

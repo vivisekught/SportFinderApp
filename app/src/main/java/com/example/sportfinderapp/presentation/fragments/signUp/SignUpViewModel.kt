@@ -1,17 +1,17 @@
-package com.example.sportfinderapp.presentation.fragments.registration
+package com.example.sportfinderapp.presentation.fragments.signUp
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sportfinderapp.domain.entity.Response
-import com.example.sportfinderapp.domain.usecases.user.CreateUserUseCase
+import com.example.sportfinderapp.domain.entity.responses.SignUpResponse
+import com.example.sportfinderapp.domain.usecases.user.SignUpUserUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RegistrationViewModel @Inject constructor(
-    private val createUserUseCase: CreateUserUseCase
+class SignUpViewModel @Inject constructor(
+    private val singUpUserUseCase: SignUpUserUseCase
 ) : ViewModel() {
 
     private val _errorInputEmail = MutableLiveData<Boolean>()
@@ -30,26 +30,29 @@ class RegistrationViewModel @Inject constructor(
     val errorMessage: LiveData<String>
         get() = _errorMessage
 
-    private val _singUpState = MutableLiveData<Response>()
-    val singUpState: LiveData<Response> = _singUpState
+    private val _singUpState = MutableLiveData<SignUpResponse>()
+    val singUpState: LiveData<SignUpResponse> = _singUpState
 
     fun registration(inputFullName: String?, inputEmail: String?, inputPassword: String?) {
         val fullName = inputFullName ?: ""
         val email = inputEmail?.trim() ?: ""
         val password = inputPassword?.trim() ?: ""
 
-        if (checkRegistration(fullName, email, password)) {
+        if (checkSignIn(fullName, email, password)) {
             viewModelScope.launch {
-                createUserUseCase(email = email, password = password, fullName = fullName).collect{
+                singUpUserUseCase(email = email, password = password, fullName = fullName).collect{
                     when(it) {
-                        is Response.Loading -> {
-                            _singUpState.value = Response.Loading
+                        is SignUpResponse.Loading -> {
+                            _singUpState.value = SignUpResponse.Loading
                         }
-                        is Response.Error -> {
-                            _singUpState.value = Response.Error(it.message)
+                        is SignUpResponse.UnexpectedError -> {
+                            _singUpState.value = SignUpResponse.UnexpectedError(it.message)
                         }
-                        is Response.Success -> {
-                            _singUpState.value = Response.Success
+                        is SignUpResponse.Success -> {
+                            _singUpState.value = SignUpResponse.Success
+                        }
+                        else -> {
+
                         }
                     }
                 }
@@ -58,7 +61,7 @@ class RegistrationViewModel @Inject constructor(
 
     }
 
-    private fun checkRegistration(
+    private fun checkSignIn(
         fullName: String,
         email: String,
         password: String

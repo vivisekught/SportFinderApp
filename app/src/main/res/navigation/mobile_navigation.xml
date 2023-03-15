@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/registrationFragment">
+    app:startDestination="@id/signUpFragment">
 
     <fragment
         android:id="@+id/navigation_chat"
@@ -77,27 +77,26 @@
             app:argType="com.example.sportfinderapp.domain.entity.Training" />
     </fragment>
     <fragment
-        android:id="@+id/registrationFragment"
-        android:name="com.example.sportfinderapp.presentation.fragments.registration.RegistrationFragment"
-        android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
+        android:id="@+id/signUpFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.signUp.SignUpFragment"
+        android:label="SignUpFragment" >
         <action
-            android:id="@+id/action_registrationFragment_to_navigation_home"
+            android:id="@+id/action_signUpFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
         <action
-            android:id="@+id/action_registrationFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.sportfinderapp.presentation.fragments.login.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        android:id="@+id/signInFragment"
+        android:name="com.example.sportfinderapp.presentation.fragments.signIn.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
         <action
-            android:id="@+id/action_loginFragment_to_navigation_home"
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
-        <action
-            android:id="@+id/action_loginFragment_to_registrationFragment"
-            app:destination="@id/registrationFragment" />
     </fragment>
 </navigation>

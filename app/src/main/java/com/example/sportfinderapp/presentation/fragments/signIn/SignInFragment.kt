@@ -1,4 +1,4 @@
-package com.example.sportfinderapp.presentation.fragments.login
+package com.example.sportfinderapp.presentation.fragments.signIn
 
 import android.content.Context
 import android.os.Bundle
@@ -13,22 +13,22 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.sportfinderapp.databinding.FragmentLoginBinding
+import com.example.sportfinderapp.databinding.FragmentSignInBinding
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
 import javax.inject.Inject
 
 
-class LoginFragment : Fragment() {
+class SignInFragment : Fragment() {
 
-    lateinit var viewModel: LoginViewModel
+    lateinit var viewModel: SignInViewModel
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding: FragmentLoginBinding
-        get() = _binding ?: throw RuntimeException("FragmentLoginBinding == null")
+    private var _binding: FragmentSignInBinding? = null
+    private val binding: FragmentSignInBinding
+        get() = _binding ?: throw RuntimeException("FragmentSignInBinding == null")
 
     private val component by lazy {
         (requireActivity().application as SportAppFinderApp).component
@@ -43,7 +43,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginBinding.inflate(
+        _binding = FragmentSignInBinding.inflate(
             LayoutInflater.from(inflater.context), container, false
         )
         return binding.root
@@ -52,7 +52,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[SignInViewModel::class.java]
         setupOnClickListener()
         observeViewModel()
         addTextChangeListeners()
@@ -61,7 +61,7 @@ class LoginFragment : Fragment() {
     private fun setupOnClickListener() {
         with(binding) {
             goToRegistrationButton.setOnClickListener {
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
+                findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
             }
             loginButton.setOnClickListener {
                 viewModel.loginCheck(
@@ -108,7 +108,7 @@ class LoginFragment : Fragment() {
                 is SignInState.Success -> {
                     binding.progressBarLoading.isVisible = false
                     findNavController().navigate(
-                        LoginFragmentDirections.actionLoginFragmentToNavigationHome()
+                        SignInFragmentDirections.actionSignInFragmentToNavigationHome()
                     )
                 }
             }
@@ -143,6 +143,6 @@ class LoginFragment : Fragment() {
 
 
     companion object {
-        fun newInstance() = LoginFragment()
+        fun newInstance() = SignInFragment()
     }
 }

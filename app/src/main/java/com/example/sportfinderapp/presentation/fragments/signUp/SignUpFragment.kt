@@ -1,4 +1,4 @@
-package com.example.sportfinderapp.presentation.fragments.registration
+package com.example.sportfinderapp.presentation.fragments.signUp
 
 import android.content.Context
 import android.os.Bundle
@@ -12,22 +12,22 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.sportfinderapp.databinding.FragmentRegistrationBinding
-import com.example.sportfinderapp.domain.entity.Response
+import com.example.sportfinderapp.databinding.FragmentSignUpBinding
+import com.example.sportfinderapp.domain.entity.responses.SignUpResponse
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
 import javax.inject.Inject
 
-class RegistrationFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
-    lateinit var viewModel: RegistrationViewModel
+    lateinit var viewModel: SignUpViewModel
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private var _binding: FragmentRegistrationBinding? = null
-    private val binding: FragmentRegistrationBinding
-        get() = _binding ?: throw RuntimeException("FragmentRegistrationBinding == null")
+    private var _binding: FragmentSignUpBinding? = null
+    private val binding: FragmentSignUpBinding
+        get() = _binding ?: throw RuntimeException("FragmentSignUpBinding == null")
 
     private val component by lazy {
         (requireActivity().application as SportAppFinderApp).component
@@ -42,7 +42,7 @@ class RegistrationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRegistrationBinding.inflate(
+        _binding = FragmentSignUpBinding.inflate(
             LayoutInflater.from(inflater.context), container, false
         )
         return binding.root
@@ -50,7 +50,7 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)[RegistrationViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[SignUpViewModel::class.java]
         setupOnClickListener()
         observeViewModel()
         addTextChangeListeners()
@@ -126,19 +126,20 @@ class RegistrationFragment : Fragment() {
 
             singUpState.observe(viewLifecycleOwner) {
                 when (it) {
-                    is Response.Loading -> {
+                    is SignUpResponse.Loading -> {
                         binding.progressBarLoading.isVisible = true
                     }
-                    is Response.Error -> {
+                    is SignUpResponse.UnexpectedError -> {
                         binding.progressBarLoading.isVisible = false
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                     }
-                    is Response.Success -> {
+                    is SignUpResponse.Success -> {
                         binding.progressBarLoading.isVisible = false
                         findNavController().navigate(
-                            RegistrationFragmentDirections.actionRegistrationFragmentToNavigationHome()
+                            SignUpFragmentDirections.actionSignUpFragmentToNavigationHome()
                         )
                     }
+                    else -> {}
                 }
             }
         }
@@ -155,7 +156,7 @@ class RegistrationFragment : Fragment() {
             }
 
             alreadyHaveAccButton.setOnClickListener {
-                findNavController().navigate(RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment())
+                findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignInFragment())
             }
         }
     }

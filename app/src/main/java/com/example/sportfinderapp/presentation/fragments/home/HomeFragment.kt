@@ -12,25 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentHomeBinding
-import com.example.sportfinderapp.domain.entity.User
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
 import com.example.sportfinderapp.presentation.adapters.UserSportsAdapter
-import com.example.sportfinderapp.presentation.fragments.sport.SportAllImagesFragmentArgs
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
-    private val args by navArgs<HomeFragmentArgs>()
-
     private lateinit var userSportAdapter: UserSportsAdapter
 
     private lateinit var viewModel: HomeViewModel
-
-    private lateinit var user: User
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -47,12 +40,6 @@ class HomeFragment : Fragment() {
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        user = args.user
-        Log.d("Nikita", user.toString())
     }
 
     override fun onCreateView(
@@ -76,8 +63,6 @@ class HomeFragment : Fragment() {
         viewModel.userSportsList.observe(viewLifecycleOwner) {
             userSportAdapter.submitList(it)
         }
-
-
     }
 
     private fun setupRecyclerView() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.registration.RegistrationFragment">
+    tools:context=".presentation.fragments.signUp.SignUpFragment">
 
     <TextView
         android:id="@+id/app_title_tv"

@@ -1,4 +1,4 @@
-package com.example.sportfinderapp.presentation.fragments.login
+package com.example.sportfinderapp.presentation.fragments.signIn
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,7 +10,7 @@ import com.example.sportfinderapp.domain.usecases.user.SignInUserUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val singInUserUse: SignInUserUseCase
 ) : ViewModel() {
     private val _state = MutableLiveData<SignInState>()

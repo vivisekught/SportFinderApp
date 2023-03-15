@@ -1,4 +1,4 @@
-package com.example.sportfinderapp.presentation.fragments.login
+package com.example.sportfinderapp.presentation.fragments.signIn
 
 sealed class SignInState {
     object EmptyEmail: SignInState()
