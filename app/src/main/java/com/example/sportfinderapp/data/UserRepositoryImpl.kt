@@ -9,6 +9,7 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
@@ -50,6 +51,8 @@ class UserRepositoryImpl @Inject constructor(
                 emit(SignUpResponse.UnexpectedError("Failed to Sign Up"))
             }
 
+        } catch (e: FirebaseAuthUserCollisionException) {
+            emit(SignUpResponse.EmailAlreadyUsed)
         } catch (e: FirebaseNetworkException) {
             emit(SignUpResponse.NetworkError)
         } catch (e: FirebaseAuthWeakPasswordException) {
@@ -79,11 +82,14 @@ class UserRepositoryImpl @Inject constructor(
             emit(SignInResponse.InvalidCredentialError)
         } catch (e: FirebaseNetworkException) {
             emit(SignInResponse.NetworkError)
-        }
-        catch (e: FirebaseTooManyRequestsException){
+        } catch (e: FirebaseTooManyRequestsException) {
             emit(SignInResponse.UnexpectedError("Too many requests, please reset password or try later!"))
-        }catch (e: Exception) {
-            emit(SignInResponse.UnexpectedError(e.localizedMessage?.toString() ?: "Unexpected error"))
+        } catch (e: Exception) {
+            emit(
+                SignInResponse.UnexpectedError(
+                    e.localizedMessage?.toString() ?: "Unexpected error"
+                )
+            )
         }
     }
 }

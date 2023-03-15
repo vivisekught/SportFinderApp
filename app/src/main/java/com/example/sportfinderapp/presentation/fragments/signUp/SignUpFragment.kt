@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sportfinderapp.databinding.FragmentSignUpBinding
-import com.example.sportfinderapp.domain.entity.responses.SignUpResponse
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
 import javax.inject.Inject
@@ -39,8 +38,7 @@ class SignUpFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSignUpBinding.inflate(
             LayoutInflater.from(inflater.context), container, false
@@ -63,7 +61,7 @@ class SignUpFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputFullName()
+                binding.fullNameTil.error = null
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -74,7 +72,7 @@ class SignUpFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputEmail()
+                binding.emailTil.error = null
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -85,7 +83,7 @@ class SignUpFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputPassword()
+                binding.passwordTil.error = null
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -94,52 +92,40 @@ class SignUpFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        with(viewModel) {
-            errorInputFullName.observe(viewLifecycleOwner) {
-                val message = if (it) {
-                    "Empty name"
-                } else {
-                    null
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                SignUpState.EmailAlreadyUsedError -> {
+                    binding.progressBarLoading.isVisible = false
+                    binding.emailTil.error = "Email already used"
                 }
-                binding.fullNameTil.error = message
-            }
-            errorInputEmail.observe(viewLifecycleOwner) {
-                val message = if (it) {
-                    "Incorrect email"
-                } else {
-                    null
+                SignUpState.EmptyFullName -> {
+                    binding.fullNameTil.error = "Empty full name"
                 }
-                binding.emailTil.error = message
-            }
-
-            errorInputPassword.observe(viewLifecycleOwner) {
-                val message = if (it) {
-                    "Incorrect password"
-                } else {
-                    null
+                SignUpState.IncorrectEmail -> {
+                    binding.emailTil.error = "Incorrect email"
                 }
-                binding.passwordTil.error = message
-            }
-            errorMessage.observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }
-
-            singUpState.observe(viewLifecycleOwner) {
-                when (it) {
-                    is SignUpResponse.Loading -> {
-                        binding.progressBarLoading.isVisible = true
-                    }
-                    is SignUpResponse.UnexpectedError -> {
-                        binding.progressBarLoading.isVisible = false
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                    }
-                    is SignUpResponse.Success -> {
-                        binding.progressBarLoading.isVisible = false
-                        findNavController().navigate(
-                            SignUpFragmentDirections.actionSignUpFragmentToNavigationHome()
-                        )
-                    }
-                    else -> {}
+                SignUpState.Loading -> {
+                    binding.progressBarLoading.isVisible = true
+                }
+                SignUpState.NetworkError -> {
+                    binding.progressBarLoading.isVisible = false
+                    Toast.makeText(requireContext(), "Check Internet connection", Toast.LENGTH_LONG)
+                        .show()
+                }
+                is SignUpState.UnexpectedError -> {
+                    binding.progressBarLoading.isVisible = false
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                is SignUpState.WeakPasswordError -> {
+                    binding.progressBarLoading.isVisible = false
+                    binding.passwordTil.error = it.reason
+                }
+                SignUpState.Success -> {
+                    binding.progressBarLoading.isVisible = false
+                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToNavigationHome())
+                }
+                SignUpState.EmptyPassword -> {
+                    binding.passwordTil.error = "Empty password"
                 }
             }
         }

@@ -14,87 +14,65 @@ class SignUpViewModel @Inject constructor(
     private val singUpUserUseCase: SignUpUserUseCase
 ) : ViewModel() {
 
-    private val _errorInputEmail = MutableLiveData<Boolean>()
-    val errorInputEmail: LiveData<Boolean>
-        get() = _errorInputEmail
-
-    private val _errorInputPassword = MutableLiveData<Boolean>()
-    val errorInputPassword: LiveData<Boolean>
-        get() = _errorInputPassword
-
-    private val _errorInputFullName = MutableLiveData<Boolean>()
-    val errorInputFullName: LiveData<Boolean>
-        get() = _errorInputFullName
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
-        get() = _errorMessage
-
-    private val _singUpState = MutableLiveData<SignUpResponse>()
-    val singUpState: LiveData<SignUpResponse> = _singUpState
+    private val _state = MutableLiveData<SignUpState>()
+    val state: LiveData<SignUpState>
+        get() = _state
 
     fun registration(inputFullName: String?, inputEmail: String?, inputPassword: String?) {
         val fullName = inputFullName ?: ""
         val email = inputEmail?.trim() ?: ""
         val password = inputPassword?.trim() ?: ""
 
-        if (checkSignIn(fullName, email, password)) {
+        if (checkSignUp(fullName, email, password)) {
             viewModelScope.launch {
-                singUpUserUseCase(email = email, password = password, fullName = fullName).collect{
-                    when(it) {
+                singUpUserUseCase(email = email, password = password, fullName = fullName).collect {
+                    when (it) {
                         is SignUpResponse.Loading -> {
-                            _singUpState.value = SignUpResponse.Loading
+                            _state.value = SignUpState.Loading
                         }
                         is SignUpResponse.UnexpectedError -> {
-                            _singUpState.value = SignUpResponse.UnexpectedError(it.message)
+                            _state.value = SignUpState.UnexpectedError(it.message)
                         }
                         is SignUpResponse.Success -> {
-                            _singUpState.value = SignUpResponse.Success
+                            _state.value = SignUpState.Success
                         }
-                        else -> {
-
+                        is SignUpResponse.EmailAlreadyUsed -> {
+                            _state.value = SignUpState.EmailAlreadyUsedError
+                        }
+                        SignUpResponse.NetworkError -> {
+                            _state.value = SignUpState.NetworkError
+                        }
+                        is SignUpResponse.WeakPasswordError -> {
+                            _state.value = SignUpState.WeakPasswordError(it.reason)
                         }
                     }
                 }
             }
         }
-
     }
 
-    private fun checkSignIn(
+    private fun checkSignUp(
         fullName: String,
         email: String,
         password: String
     ): Boolean {
         var result = true
         if (fullName.isBlank()) {
-            _errorInputFullName.value = true
+            _state.value = SignUpState.EmptyFullName
             result = false
         }
-        if (email.isBlank() || !checkEmail(email)) {
-            _errorInputEmail.value = true
+        if (email.isBlank() || !checkEmailPattern(email)) {
+            _state.value = SignUpState.IncorrectEmail
             result = false
         }
-        if (password.length < 6 || password.length > 60) {
-            _errorInputPassword.value = true
+        if (password.isBlank()) {
+            _state.value = SignUpState.EmptyPassword
             result = false
         }
         return result
     }
 
-    private fun checkEmail(email: String): Boolean {
+    private fun checkEmailPattern(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    fun resetErrorInputEmail() {
-        _errorInputEmail.value = false
-    }
-
-    fun resetErrorInputPassword() {
-        _errorInputPassword.value = false
-    }
-
-    fun resetErrorInputFullName() {
-        _errorInputFullName.value = false
     }
 }
