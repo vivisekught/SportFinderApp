@@ -30,7 +30,7 @@ interface ApplicationComponent {
     interface ApplicationComponentFactory {
 
         fun create(
-            @BindsInstance application: Application
+            @BindsInstance application: Application,
         ): ApplicationComponent
     }
 }

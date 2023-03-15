@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/registrationFragment">
 
     <fragment
         android:id="@+id/navigation_chat"
@@ -18,9 +18,6 @@
         <action
             android:id="@+id/action_navigation_home_to_sportPageFragment"
             app:destination="@id/sportPageFragment" />
-        <argument
-            android:name="user"
-            app:argType="com.example.sportfinderapp.domain.entity.User" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search"

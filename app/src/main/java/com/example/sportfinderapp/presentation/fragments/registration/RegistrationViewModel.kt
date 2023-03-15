@@ -1,14 +1,18 @@
 package com.example.sportfinderapp.presentation.fragments.registration
 
-import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.sportfinderapp.domain.entity.User
+import androidx.lifecycle.viewModelScope
+import com.example.sportfinderapp.domain.entity.Response
+import com.example.sportfinderapp.domain.usecases.user.CreateUserUseCase
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RegistrationViewModel @Inject constructor() : ViewModel() {
+class RegistrationViewModel @Inject constructor(
+    private val createUserUseCase: CreateUserUseCase
+) : ViewModel() {
 
     private val _errorInputEmail = MutableLiveData<Boolean>()
     val errorInputEmail: LiveData<Boolean>
@@ -18,19 +22,16 @@ class RegistrationViewModel @Inject constructor() : ViewModel() {
     val errorInputPassword: LiveData<Boolean>
         get() = _errorInputPassword
 
-
     private val _errorInputFullName = MutableLiveData<Boolean>()
     val errorInputFullName: LiveData<Boolean>
         get() = _errorInputFullName
 
-    private val _finishRegistration = MutableLiveData<Unit>()
-    val finishRegistration: LiveData<Unit>
-        get() = _finishRegistration
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
 
-    private val _user = MutableLiveData<User>()
-    val user: LiveData<User>
-        get() = _user
-
+    private val _singUpState = MutableLiveData<Response>()
+    val singUpState: LiveData<Response> = _singUpState
 
     fun registration(inputFullName: String?, inputEmail: String?, inputPassword: String?) {
         val fullName = inputFullName ?: ""
@@ -38,14 +39,23 @@ class RegistrationViewModel @Inject constructor() : ViewModel() {
         val password = inputPassword?.trim() ?: ""
 
         if (checkRegistration(fullName, email, password)) {
-            createUser(fullName, email, password)
-            finishWork()
+            viewModelScope.launch {
+                createUserUseCase(email = email, password = password, fullName = fullName).collect{
+                    when(it) {
+                        is Response.Loading -> {
+                            _singUpState.value = Response.Loading
+                        }
+                        is Response.Error -> {
+                            _singUpState.value = Response.Error(it.message)
+                        }
+                        is Response.Success -> {
+                            _singUpState.value = Response.Success
+                        }
+                    }
+                }
+            }
         }
 
-    }
-
-    private fun createUser(fullName: String, email: String, password: String){
-        _user.value = User(1, email, password, fullName) // create and get user in db
     }
 
     private fun checkRegistration(
@@ -84,9 +94,4 @@ class RegistrationViewModel @Inject constructor() : ViewModel() {
     fun resetErrorInputFullName() {
         _errorInputFullName.value = false
     }
-
-    private fun finishWork() {
-        _finishRegistration.value = Unit
-    }
-
 }

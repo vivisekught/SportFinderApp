@@ -4,14 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sportfinderapp.databinding.FragmentRegistrationBinding
+import com.example.sportfinderapp.domain.entity.Response
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
 import javax.inject.Inject
@@ -31,14 +33,9 @@ class RegistrationFragment : Fragment() {
         (requireActivity().application as SportAppFinderApp).component
     }
 
-
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
-    }
-
-    companion object {
-        fun newInstance() = RegistrationFragment()
     }
 
     override fun onCreateView(
@@ -123,13 +120,26 @@ class RegistrationFragment : Fragment() {
                 }
                 binding.passwordTil.error = message
             }
-            finishRegistration.observe(viewLifecycleOwner) {
-                Log.d("Nikita", userUID.value.toString())
-                findNavController().navigate(
-                    RegistrationFragmentDirections.actionRegistrationFragmentToNavigationHome(
-                        viewModel.user.value ?: throw RuntimeException("User doesnt create")
-                    )
-                )
+            errorMessage.observe(viewLifecycleOwner) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+
+            singUpState.observe(viewLifecycleOwner) {
+                when (it) {
+                    is Response.Loading -> {
+                        binding.progressBarLoading.isVisible = true
+                    }
+                    is Response.Error -> {
+                        binding.progressBarLoading.isVisible = false
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                    }
+                    is Response.Success -> {
+                        binding.progressBarLoading.isVisible = false
+                        findNavController().navigate(
+                            RegistrationFragmentDirections.actionRegistrationFragmentToNavigationHome()
+                        )
+                    }
+                }
             }
         }
     }
@@ -148,6 +158,5 @@ class RegistrationFragment : Fragment() {
                 findNavController().navigate(RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment())
             }
         }
-
     }
 }
