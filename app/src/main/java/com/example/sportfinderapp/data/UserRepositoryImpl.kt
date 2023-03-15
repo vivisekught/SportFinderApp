@@ -3,7 +3,10 @@ package com.example.sportfinderapp.data
 import com.example.sportfinderapp.domain.entity.Response
 import com.example.sportfinderapp.domain.entity.User
 import com.example.sportfinderapp.domain.repository.UserRepository
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,7 +18,7 @@ class UserRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore
 ) : UserRepository {
 
-    override suspend fun createUser(
+    override suspend fun singUpUser(
         email: String,
         password: String,
         fullName: String
@@ -47,6 +50,32 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             emit(Response.Error(e.localizedMessage ?: "An Unexpected error"))
         }
+    }
+
+    override suspend fun singInUser(email: String, password: String): Flow<Response> = flow {
+        var singInSuccessfully = false
+        emit(Response.Loading)
+        try {
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener {
+                    singInSuccessfully = it.isSuccessful
+                }.await()
+
+            if (singInSuccessfully) {
+                emit(Response.Success)
+            } else {
+                emit(Response.Error("Failed to Sing Up"))
+            }
+        } catch (e: FirebaseAuthInvalidUserException) {
+            emit(Response.Error("Email does not exist"))
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            emit(Response.Error("IncorrectPassword"))
+        } catch (e: FirebaseNetworkException) {
+            emit(Response.Error("Network"))
+        } catch (e: Exception){
+            emit(Response.Error("An Unexpected error"))
+        }
+
 
     }
 }

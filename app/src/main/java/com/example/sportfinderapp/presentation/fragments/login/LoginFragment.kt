@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -15,8 +17,6 @@ import com.example.sportfinderapp.databinding.FragmentLoginBinding
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
 import javax.inject.Inject
-import android.text.method.PasswordTransformationMethod
-import android.text.method.HideReturnsTransformationMethod
 
 
 class LoginFragment : Fragment() {
@@ -75,28 +75,31 @@ class LoginFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
-                is EmptyEmail -> {
+                is SingInState.EmptyEmail -> {
                     Log.d("Nikita", "EmptyEmail")
                     binding.emailTil.error = "empty email"
                 }
-                is EmptyPassword -> {
+                is SingInState.EmptyPassword -> {
                     binding.passwordTil.error = "empty password"
                 }
-                is EmptyEmailAndPassword -> {
-                    Log.d("Nikita", "EmptyEmailAndPassword")
-                    binding.emailTil.error = "empty email"
-                    binding.passwordTil.error = "empty password"
+//                is EmailNotFound -> {
+//                    binding.emailTil.error = "email not found"
+//                }
+//                is IncorrectPassword -> {
+//                    Log.d("Nikita", "IncorrectPassword")
+//                    binding.passwordTil.error = "incorrect password"
+//                }
+                is SingInState.Loading -> {
+                    binding.progressBarLoading.isVisible = true
                 }
-                is EmailNotFound -> {
-                    binding.emailTil.error = "email not found"
+                is SingInState.Error -> {
+                    binding.progressBarLoading.isVisible = false
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                 }
-                is IncorrectPassword -> {
-                    Log.d("Nikita", "IncorrectPassword")
-                    binding.passwordTil.error = "incorrect password"
-                }
-                is CorrectLoginData -> {
+                is SingInState.Success -> {
+                    binding.progressBarLoading.isVisible = false
                     findNavController().navigate(
-                        LoginFragmentDirections.actionLoginFragmentToNavigationHome(it.user)
+                        LoginFragmentDirections.actionLoginFragmentToNavigationHome()
                     )
                 }
             }
