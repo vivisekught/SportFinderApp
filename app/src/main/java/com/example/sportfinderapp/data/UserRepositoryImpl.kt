@@ -1,16 +1,13 @@
 package com.example.sportfinderapp.data
 
 import com.example.sportfinderapp.domain.entity.User
+import com.example.sportfinderapp.domain.entity.responses.ResetPasswordResponse
 import com.example.sportfinderapp.domain.entity.responses.SignInResponse
 import com.example.sportfinderapp.domain.entity.responses.SignUpResponse
 import com.example.sportfinderapp.domain.repository.UserRepository
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -87,6 +84,38 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             emit(
                 SignInResponse.UnexpectedError(
+                    e.localizedMessage?.toString() ?: "Unexpected error"
+                )
+            )
+        }
+    }
+
+    override suspend fun resetUserPassword(email: String): Flow<ResetPasswordResponse> = flow {
+        var resetPasswordSuccessfully = false
+        try {
+            emit(ResetPasswordResponse.Loading)
+            firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    resetPasswordSuccessfully = it.isSuccessful
+                }
+            }.await()
+
+            if (resetPasswordSuccessfully) {
+                emit(ResetPasswordResponse.Success)
+            } else {
+                emit(ResetPasswordResponse.UnexpectedError("Failed to Sign Up"))
+            }
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            emit(ResetPasswordResponse.IncorrectEmailError)
+        } catch (e: FirebaseAuthInvalidUserException) {
+            emit(ResetPasswordResponse.EmailNotFoundError)
+        } catch (e: FirebaseNetworkException) {
+            emit(ResetPasswordResponse.NetworkError)
+        } catch (e: FirebaseTooManyRequestsException) {
+            emit(ResetPasswordResponse.UnexpectedError("Too many requests, please reset password or try later!"))
+        } catch (e: Exception) {
+            emit(
+                ResetPasswordResponse.UnexpectedError(
                     e.localizedMessage?.toString() ?: "Unexpected error"
                 )
             )

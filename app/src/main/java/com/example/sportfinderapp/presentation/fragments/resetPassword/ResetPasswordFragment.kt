@@ -1,10 +1,9 @@
-package com.example.sportfinderapp.presentation.fragments.signIn
+package com.example.sportfinderapp.presentation.fragments.resetPassword
 
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,27 +12,25 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.sportfinderapp.databinding.FragmentSignInBinding
+import com.example.sportfinderapp.databinding.FragmentResetPasswordBinding
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
 import javax.inject.Inject
 
+class ResetPasswordFragment : Fragment() {
 
-class SignInFragment : Fragment() {
-
-    lateinit var viewModel: SignInViewModel
+    lateinit var viewModel: ResetPasswordViewModel
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private var _binding: FragmentSignInBinding? = null
-    private val binding: FragmentSignInBinding
-        get() = _binding ?: throw RuntimeException("FragmentSignInBinding == null")
+    private var _binding: FragmentResetPasswordBinding? = null
+    private val binding: FragmentResetPasswordBinding
+        get() = _binding ?: throw RuntimeException("FragmentResetPasswordBinding == null")
 
     private val component by lazy {
         (requireActivity().application as SportAppFinderApp).component
     }
-
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -41,18 +38,18 @@ class SignInFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSignInBinding.inflate(
+        _binding = FragmentResetPasswordBinding.inflate(
             LayoutInflater.from(inflater.context), container, false
         )
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)[SignInViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ResetPasswordViewModel::class.java]
         setupOnClickListener()
         observeViewModel()
         addTextChangeListeners()
@@ -60,17 +57,8 @@ class SignInFragment : Fragment() {
 
     private fun setupOnClickListener() {
         with(binding) {
-            goToRegistrationButton.setOnClickListener {
-                findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
-            }
-            loginButton.setOnClickListener {
-                viewModel.loginCheck(
-                    binding.emailEt.text.toString(),
-                    binding.passwordEt.text.toString()
-                )
-            }
             resetPasswordButton.setOnClickListener {
-                findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToResetPasswordFragment())
+                viewModel.resetPasswordCheck(binding.emailEt.text.toString())
             }
         }
     }
@@ -78,41 +66,34 @@ class SignInFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
-                is SignInState.EmptyEmail -> {
-                    Log.d("Nikita", "EmptyEmail")
-                    binding.emailTil.error = "empty email"
+                is ResetPasswordState.EmptyEmail -> {
+                    binding.emailTil.error = "Empty email"
                 }
-                is SignInState.EmptyPassword -> {
-                    binding.passwordTil.error = "empty password"
-                }
-                is SignInState.Loading -> {
+                is ResetPasswordState.Loading -> {
                     binding.progressBarLoading.isVisible = true
                 }
-
-                is SignInState.IncorrectPassword -> {
+                ResetPasswordState.EmailNotFound -> {
                     binding.progressBarLoading.isVisible = false
-                    binding.passwordTil.error = "Incorrect password!"
+                    binding.emailTil.error = "Email not found"
                 }
-
-                is SignInState.InvalidUserError -> {
+                ResetPasswordState.IncorrectEmailError -> {
                     binding.progressBarLoading.isVisible = false
-                    binding.emailTil.error = "Email not found!"
+                    binding.emailTil.error = "Incorrect email"
                 }
-                is SignInState.NetworkError -> {
+                ResetPasswordState.NetworkError -> {
                     binding.progressBarLoading.isVisible = false
                     Toast.makeText(requireContext(), "Check Internet connection", Toast.LENGTH_LONG)
                         .show()
                 }
-
-                is SignInState.UnexpectedError -> {
+                ResetPasswordState.Success -> {
+                    binding.progressBarLoading.isVisible = false
+                    Toast.makeText(requireContext(), "Check your email!", Toast.LENGTH_LONG)
+                        .show()
+                    findNavController().navigate(ResetPasswordFragmentDirections.actionResetPasswordFragmentToSignInFragment())
+                }
+                is ResetPasswordState.UnexpectedError -> {
                     binding.progressBarLoading.isVisible = false
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                }
-                is SignInState.Success -> {
-                    binding.progressBarLoading.isVisible = false
-                    findNavController().navigate(
-                        SignInFragmentDirections.actionSignInFragmentToNavigationHome()
-                    )
                 }
             }
         }
@@ -131,21 +112,5 @@ class SignInFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-        binding.passwordEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.passwordTil.error = null
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
-    }
-
-
-    companion object {
-        fun newInstance() = SignInFragment()
     }
 }
