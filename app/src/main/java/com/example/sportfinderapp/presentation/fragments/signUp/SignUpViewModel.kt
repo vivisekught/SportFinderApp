@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportfinderapp.domain.entity.responses.SignUpResponse
-import com.example.sportfinderapp.domain.usecases.user.SignUpUserUseCase
+import com.example.sportfinderapp.domain.usecases.user.auth.MailVerificationUseCase
+import com.example.sportfinderapp.domain.usecases.user.auth.SignUpUserUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
-    private val singUpUserUseCase: SignUpUserUseCase
+    private val singUpUserUseCase: SignUpUserUseCase,
+    private val mailVerificationUseCase: MailVerificationUseCase,
 ) : ViewModel() {
 
     private val _state = MutableLiveData<SignUpState>()
@@ -27,16 +29,17 @@ class SignUpViewModel @Inject constructor(
             viewModelScope.launch {
                 singUpUserUseCase(email = email, password = password, fullName = fullName).collect {
                     when (it) {
-                        is SignUpResponse.Loading -> {
+                        SignUpResponse.Loading -> {
                             _state.value = SignUpState.Loading
                         }
                         is SignUpResponse.UnexpectedError -> {
                             _state.value = SignUpState.UnexpectedError(it.message)
                         }
-                        is SignUpResponse.Success -> {
+                        SignUpResponse.Success -> {
                             _state.value = SignUpState.Success
+                            mailVerificationUseCase()
                         }
-                        is SignUpResponse.EmailAlreadyUsed -> {
+                        SignUpResponse.EmailAlreadyUsed -> {
                             _state.value = SignUpState.EmailAlreadyUsedError
                         }
                         SignUpResponse.NetworkError -> {

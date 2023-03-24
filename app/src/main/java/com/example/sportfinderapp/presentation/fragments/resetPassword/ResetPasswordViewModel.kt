@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportfinderapp.domain.entity.responses.ResetPasswordResponse
-import com.example.sportfinderapp.domain.usecases.user.ResetPasswordUseCase
+import com.example.sportfinderapp.domain.usecases.user.auth.ResetPasswordUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

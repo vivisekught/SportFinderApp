@@ -2,6 +2,7 @@ package com.example.sportfinderapp.di
 
 import android.app.Application
 import com.example.sportfinderapp.presentation.MainActivity
+import com.example.sportfinderapp.presentation.auth.AuthActivity
 import com.example.sportfinderapp.presentation.fragments.home.HomeFragment
 import com.example.sportfinderapp.presentation.fragments.resetPassword.ResetPasswordFragment
 import com.example.sportfinderapp.presentation.fragments.signIn.SignInFragment
@@ -17,6 +18,8 @@ interface ApplicationComponent {
 
     fun inject(activity: MainActivity)
 
+    fun inject(activity: AuthActivity)
+
     fun inject(fragment: HomeFragment)
 
     fun inject(fragment: SportPageFragment)
@@ -28,6 +31,7 @@ interface ApplicationComponent {
     fun inject(fragment: SignUpFragment)
 
     fun inject(fragment: ResetPasswordFragment)
+
 
     @Component.Factory
     interface ApplicationComponentFactory {

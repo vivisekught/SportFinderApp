@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">SportFinderApp</string>
     <string name="home_bottom_nav_title">Home</string>
     <string name="search_bottom_nav_title">Search</string>
@@ -44,5 +44,10 @@
     <string name="new_to_sportfinder">New to SportFinder?</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign In</string>
+    <string name="check_email_text">Check your mail and follow the instructions</string>
+    <string name="email_verification_error">Please verify email</string>
+    <string name="email_verification_again">Do you want a verification email to be resent to your email?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

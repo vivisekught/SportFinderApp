@@ -1,10 +1,9 @@
 package com.example.sportfinderapp.data
 
-import com.example.sportfinderapp.domain.entity.User
 import com.example.sportfinderapp.domain.entity.responses.ResetPasswordResponse
 import com.example.sportfinderapp.domain.entity.responses.SignInResponse
 import com.example.sportfinderapp.domain.entity.responses.SignUpResponse
-import com.example.sportfinderapp.domain.repository.UserRepository
+import com.example.sportfinderapp.domain.repository.UserAuthRepository
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -14,10 +13,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
+class UserAuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore
-) : UserRepository {
+) : UserAuthRepository {
 
     override suspend fun signUpUser(
         email: String,
@@ -34,20 +33,17 @@ class UserRepositoryImpl @Inject constructor(
                 }.await()
 
             if (singUpSuccessfully) {
-                val userId = firebaseAuth.currentUser?.uid!!
-                val user = User(id = userId, email = email, fullName = fullName)
 
-                firebaseFirestore.collection("users").document(userId)
-                    .set(user).addOnSuccessListener {
-
-                    }.await()
-
+//                val userId = firebaseAuth.currentUser?.uid!!
+//                val user = User(id = userId, email = email, fullName = fullName)
+//
+//                firebaseFirestore.collection("users").document(userId)
+//                    .set(user).addOnSuccessListener { }.await()
                 emit(SignUpResponse.Success)
 
             } else {
                 emit(SignUpResponse.UnexpectedError("Failed to Sign Up"))
             }
-
         } catch (e: FirebaseAuthUserCollisionException) {
             emit(SignUpResponse.EmailAlreadyUsed)
         } catch (e: FirebaseNetworkException) {
@@ -121,4 +117,14 @@ class UserRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun mailVerification() = flow {
+        var result = true
+        firebaseAuth.currentUser?.sendEmailVerification()?.addOnCompleteListener {
+            result = it.isSuccessful
+        }
+        emit(result)
+    }
+
+
 }

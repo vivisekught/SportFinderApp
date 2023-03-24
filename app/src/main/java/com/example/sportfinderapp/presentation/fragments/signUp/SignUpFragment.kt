@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentSignUpBinding
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
@@ -122,7 +123,13 @@ class SignUpFragment : Fragment() {
                 }
                 SignUpState.Success -> {
                     binding.progressBarLoading.isVisible = false
-                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToNavigationHome())
+                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignInFragment())
+                    Toast.makeText(
+                        requireContext(),
+                        requireActivity().getText(R.string.check_email_text),
+                        Toast.LENGTH_LONG
+                    ).show()
+
                 }
                 SignUpState.EmptyPassword -> {
                     binding.passwordTil.error = "Empty password"

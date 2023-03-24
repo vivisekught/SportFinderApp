@@ -1,5 +1,6 @@
 package com.example.sportfinderapp.presentation.fragments.signIn
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.sportfinderapp.R
 import com.example.sportfinderapp.databinding.FragmentSignInBinding
 import com.example.sportfinderapp.presentation.SportAppFinderApp
 import com.example.sportfinderapp.presentation.ViewModelFactory
@@ -22,6 +24,7 @@ import javax.inject.Inject
 class SignInFragment : Fragment() {
 
     lateinit var viewModel: SignInViewModel
+    private lateinit var startMainActivity: StartMainActivity
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -38,6 +41,11 @@ class SignInFragment : Fragment() {
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
+        if (context is StartMainActivity) {
+            startMainActivity = context
+        } else {
+            throw RuntimeException("Activity must implement StartMainActivity")
+        }
     }
 
     override fun onCreateView(
@@ -110,9 +118,11 @@ class SignInFragment : Fragment() {
                 }
                 is SignInState.Success -> {
                     binding.progressBarLoading.isVisible = false
-                    findNavController().navigate(
-                        SignInFragmentDirections.actionSignInFragmentToNavigationHome()
-                    )
+                    startMainActivity.startMainActivity()
+                }
+                SignInState.MailVerificationError -> {
+                    binding.progressBarLoading.isVisible = false
+                    createDialog()
                 }
             }
         }
@@ -142,6 +152,34 @@ class SignInFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
+    }
+
+    interface StartMainActivity {
+        fun startMainActivity()
+    }
+
+    private fun createDialog() {
+        val alertDialog: AlertDialog? = activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setTitle(R.string.email_verification_again)
+                setPositiveButton(
+                    R.string.ok
+                ) { dialog, id ->
+                    viewModel.sendMailVerification()
+                    dialog.dismiss()
+                }
+                setNegativeButton(
+                    R.string.cancel
+                ) { dialog, id ->
+                    dialog.cancel()
+                }
+            }
+            // Create the AlertDialog
+            builder.create()
+        }
+        alertDialog?.show()
+
     }
 
 

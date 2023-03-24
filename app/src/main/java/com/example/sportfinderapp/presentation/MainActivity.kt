@@ -1,8 +1,9 @@
 package com.example.sportfinderapp.presentation
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -34,14 +35,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.signInFragment || destination.id == R.id.signUpFragment) {
-                navView.visibility = View.GONE
-                supportActionBar?.hide()
-            } else {
-                navView.visibility = View.VISIBLE
-                supportActionBar?.show()
-            }
+    }
+
+    companion object {
+        fun newInstance(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
         }
     }
 

@@ -6,12 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportfinderapp.domain.entity.responses.SignInResponse
-import com.example.sportfinderapp.domain.usecases.user.SignInUserUseCase
+import com.example.sportfinderapp.domain.usecases.user.auth.MailVerificationUseCase
+import com.example.sportfinderapp.domain.usecases.user.auth.SignInUserUseCase
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignInViewModel @Inject constructor(
-    private val singInUserUse: SignInUserUseCase
+    private val singInUserUse: SignInUserUseCase,
+    private val mailVerificationUseCase: MailVerificationUseCase,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
     private val _state = MutableLiveData<SignInState>()
     val state: LiveData<SignInState>
@@ -42,7 +46,7 @@ class SignInViewModel @Inject constructor(
                         _state.value = SignInState.Loading
                     }
                     is SignInResponse.Success -> {
-                        _state.value = SignInState.Success
+                        checkMailVerification()
                     }
                     is SignInResponse.InvalidUserError -> {
                         _state.value = SignInState.InvalidUserError
@@ -56,6 +60,27 @@ class SignInViewModel @Inject constructor(
                     is SignInResponse.UnexpectedError -> {
                         _state.value = SignInState.UnexpectedError(it.message)
                     }
+                }
+            }
+        }
+    }
+
+    private fun checkMailVerification(){
+        if(firebaseAuth.currentUser?.isEmailVerified == true){
+            _state.value = SignInState.Success
+        }
+        else {
+            _state.value = SignInState.MailVerificationError
+        }
+    }
+
+    fun sendMailVerification(){
+        viewModelScope.launch {
+            mailVerificationUseCase().collect{
+                if(it){
+                    Log.d("Nikita", "Success")
+                } else {
+                    Log.d("Nikita", "Failure")
                 }
             }
         }

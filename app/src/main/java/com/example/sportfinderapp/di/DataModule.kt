@@ -1,9 +1,9 @@
 package com.example.sportfinderapp.di
 
 import com.example.sportfinderapp.data.SportRepositoryImpl
-import com.example.sportfinderapp.data.UserRepositoryImpl
+import com.example.sportfinderapp.data.UserAuthRepositoryImpl
 import com.example.sportfinderapp.domain.repository.SportRepository
-import com.example.sportfinderapp.domain.repository.UserRepository
+import com.example.sportfinderapp.domain.repository.UserAuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Binds
@@ -19,7 +19,7 @@ interface DataModule {
 
     @ApplicationScope
     @Binds
-    fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
+    fun bindUserAuthRepository(impl: UserAuthRepositoryImpl): UserAuthRepository
 
     companion object {
         @ApplicationScope

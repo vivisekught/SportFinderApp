@@ -5,6 +5,7 @@ sealed class SignInState {
     object EmptyPassword: SignInState()
     object Loading: SignInState()
     object Success: SignInState()
+    object MailVerificationError: SignInState()
     object InvalidUserError: SignInState()
     object IncorrectPassword: SignInState()
     object NetworkError: SignInState()
