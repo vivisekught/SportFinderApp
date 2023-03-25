@@ -1,6 +1,7 @@
 package com.example.sportfinderapp.di
 
 import androidx.lifecycle.ViewModel
+import com.example.sportfinderapp.presentation.auth.AuthViewModel
 import com.example.sportfinderapp.presentation.fragments.home.HomeViewModel
 import com.example.sportfinderapp.presentation.fragments.resetPassword.ResetPasswordViewModel
 import com.example.sportfinderapp.presentation.fragments.signIn.SignInViewModel
@@ -43,4 +44,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(ResetPasswordViewModel::class)
     fun bindResetPasswordViewModel(viewModel: ResetPasswordViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AuthViewModel::class)
+    fun bindAuthViewModel(viewModel: AuthViewModel): ViewModel
 }

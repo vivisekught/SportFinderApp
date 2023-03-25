@@ -2,67 +2,46 @@ package com.example.sportfinderapp.presentation.auth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.sportfinderapp.R
+import androidx.lifecycle.ViewModelProvider
 import com.example.sportfinderapp.databinding.ActivityAuthBinding
 import com.example.sportfinderapp.presentation.MainActivity
+import com.example.sportfinderapp.presentation.SportAppFinderApp
+import com.example.sportfinderapp.presentation.ViewModelFactory
 import com.example.sportfinderapp.presentation.fragments.signIn.SignInFragment
-import com.google.firebase.auth.FirebaseAuth
+import javax.inject.Inject
 
 
 class AuthActivity : AppCompatActivity(), SignInFragment.StartMainActivity {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: AuthViewModel
+
     private lateinit var binding: ActivityAuthBinding
 
-    var firebaseAuth = FirebaseAuth.getInstance()
-
-//    private val component by lazy {
-//        (this as SportAppFinderApp).component
-//    }
+    private val component by lazy {
+        (application as SportAppFinderApp).component
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        component.inject(this)
+        component.inject(this)
         super.onCreate(savedInstanceState)
-        supportActionBar?.hide()
-        checkUserAuth()
+        viewModel = ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.hide()
+        setObservers()
     }
 
-    private fun checkUserAuth(){
-        if (firebaseAuth.currentUser?.isEmailVerified == true) {
-            startActivity(MainActivity.newInstance(this))
+    private fun setObservers() {
+        with(viewModel){
+            emailVerified.observe(this@AuthActivity){
+                startActivity(MainActivity.newInstance(this@AuthActivity))
+                finish()
+            }
         }
     }
 
-    private fun checkIfAuth() {
-        val currentUser = firebaseAuth.currentUser
-
-//        val navHostFragment =
-//            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_auth)
-//                    as NavHostFragment
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val mNavController =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_auth) as NavHostFragment
-        val navController = mNavController.navController
-
-//        val navHostFragment =
-//            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_auth)
-//                    as NavHostFragment
-//        val navController = findNavController(R.id.nav_host_fragment_activity_auth)
-        setupActionBarWithNavController(navController)
-
-
-        if (currentUser?.isEmailVerified == false) {
-//            navController.navigate(
-//                SignUpFragmentDirections.actionSignUpFragmentToMailVerificationFragment()
-//            )
-        }
-
-    }
 
     override fun startMainActivity() {
         startActivity(MainActivity.newInstance(this))
