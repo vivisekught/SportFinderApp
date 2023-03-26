@@ -182,6 +182,11 @@ class SignInFragment : Fragment() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 
     companion object {
         fun newInstance() = SignInFragment()

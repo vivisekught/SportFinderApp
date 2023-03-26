@@ -56,6 +56,8 @@ class FullscreenSportImageFragment : Fragment() {
         }
     }
 
+
+
     companion object {
         private const val FAKE_DRAG_OFFSET = -10f
     }
